@@ -11,7 +11,6 @@ return { -- HACK: docs @ https://github.com/folke/snacks.nvim/blob/main/docs
             max_width = 80,
             max_height = 20,
             history = 10,
-
         },
         animate = {
             -- your animate configuration comes here
@@ -185,7 +184,7 @@ return { -- HACK: docs @ https://github.com/folke/snacks.nvim/blob/main/docs
         end,
         desc = "Fast Rename Current File"
     }, {
-        "<leader>d",
+        "<leader>x",
         function()
             require("snacks").bufdelete()
         end,

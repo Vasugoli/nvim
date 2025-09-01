@@ -1,10 +1,9 @@
 return {
-    -- Mini Nvim
-    {"echasnovski/mini.nvim", version = false },
     -- Comments
     {
         'echasnovski/mini.comment',
         version = false,
+        event = { "BufReadPost", "BufNewFile" },
         dependencies = {
             "JoosepAlviste/nvim-ts-context-commentstring",
         },
@@ -97,6 +96,7 @@ return {
     -- Split & join
     {
         "echasnovski/mini.splitjoin",
+        event = { "BufReadPost", "BufNewFile" },
         config = function()
             local miniSplitJoin = require("mini.splitjoin")
             miniSplitJoin.setup({
@@ -109,6 +109,7 @@ return {
     {
         -- Automatic pairs
         'nvim-mini/mini.pairs',
+        event = { "BufReadPost", "BufNewFile" },
         config = function()
             require("mini.pairs").setup({})
         end
@@ -116,6 +117,7 @@ return {
     {
         --speacial keymaps for mini plugins
         'nvim-mini/mini.keymap',
+        event = { "BufReadPost", "BufNewFile" },
         config = function()
             require("mini.keymap").setup({})
         end

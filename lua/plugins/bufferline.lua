@@ -2,11 +2,12 @@ return {
     'akinsho/bufferline.nvim',
     version = "*",
     dependencies = 'nvim-tree/nvim-web-devicons',
+    event = { "BufReadPost", "BufNewFile" },
     config = function()
         require("bufferline").setup({
             options = {
                 mode = "buffers", -- set to "tabs" to only show tabpages instead
-                numbers = "none", -- "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string
+                numbers = "ordinal", -- "ordinal" | "buffer_id" | "both" | function({ ordinal, id, lower, raise }): string
                 number_style = "superscript", -- "subscript" | "" | { "none", "subscript" }
                 close_command = "bdelete! %d", -- can be a string | function
                 right_mouse_command = "bdelete! %d", -- can be a string | function
@@ -35,8 +36,9 @@ return {
                     return true
                 end,
                 offsets = {{
-                    filetype = "NvimTree",
-                    text = "File Tree",
+                    filetype = "SnacksExplorer",
+                    text = "Snacks Explorer",
+                    highlight = "Directory",
                     text_align = "left"
                 }},
                 color_icons = true,

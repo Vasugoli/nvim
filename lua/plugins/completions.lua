@@ -36,7 +36,8 @@ return {{"hrsh7th/cmp-nvim-lsp"}, {
             } -- For luasnip users.
             }, {{
                 name = "buffer"
-            }}),
+            }})
+
         })
     end
 }}
