@@ -66,7 +66,6 @@ return {
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
         linespace = 4, -- sets vim.opt.linespace
-        guifont = "FiraCode Nerd Font:h17", -- sets vim.opt.guifont
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
@@ -94,14 +93,14 @@ return {
           end,
           desc = "Close buffer from tabline",
         },
-        ["<Leader>da"] = {
-          "<cmd>Alpha<CR>",
-          desc = "Show dashboard"
-        },
         ["<Leader>pc"] = {
           vim.lsp.buf.format,
           desc = "Code Format"
         },
+        ["<Leader>pa"] = { --code actions
+          vim.lsp.buf.code_action,
+          desc = "Code Action"
+        }
         -- tables with just a `desc` key will be registered with which-key if it's installed
         -- this is useful for naming menus
         -- ["<Leader>b"] = { desc = "Buffers" },

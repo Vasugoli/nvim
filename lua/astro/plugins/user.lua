@@ -9,72 +9,84 @@ return { -- == Examples of Adding Plugins ==
     "ray-x/lsp_signature.nvim",
     event = "BufRead",
     config = function() require("lsp_signature").setup() end,
-  }, -- == Examples of Overriding Plugins ==
-  -- customize dashboard options
-  {
-    "goolord/alpha-nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function()
-      local custom_header = {
-        [[                                                                       ]],
-        [[                                                                     ]],
-        [[       ████ ██████           █████      ██                     ]],
-        [[      ███████████             █████                             ]],
-        [[      █████████ ███████████████████ ███   ███████████   ]],
-        [[     █████████  ███    █████████████ █████ ██████████████   ]],
-        [[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
-        [[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
-        [[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
-        [[                                                                       ]],
-      }
-      local startify = require "alpha.themes.startify"
-      startify.section.header.val = custom_header
-      startify.file_icons.provider = "devicons"
-      require("alpha").setup(startify.config)
-    end,
   },
-  -- {
-  --     "folke/snacks.nvim",
-  --     opts = {
-  --         dashboard = {
-  --             enable = true,
-  --             pane_gap = 2,
-  --             preset = {
-  --                 header = {[[                                                                       ]],
-  --                           [[                                                                     ]],
-  --                           [[       ████ ██████           █████      ██                     ]],
-  --                           [[      ███████████             █████                             ]],
-  --                           [[      █████████ ███████████████████ ███   ███████████   ]],
-  --                           [[     █████████  ███    █████████████ █████ ██████████████   ]],
-  --                           [[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
-  --                           [[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
-  --                           [[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
-  --                           [[                                                                       ]]}
-  --             },
-  --             {
-  --                 sections = {{
-  --                     section = "header"
-  --                 }, {
-  --                     section = "keys",
-  --                 }, {
-  --                     icon = " ",
-  --                     title = "Recent Files",
-  --                     section = "recent_files",
-  --                     indent = 2,
-  --                     padding = {2, 2}
-  --                 }, {
-  --                     icon = " ",
-  --                     title = "Projects",
-  --                     section = "projects",
-  --                     indent = 2,
-  --                     padding = 2
-  --                 }, {
-  --                     section = "startup"
-  --                 }}
-  --             }
-  --         }
-  --     }
-  -- }, -- You can disable default plugins as follows:
+  -- == Examples of Overriding Plugins ==
+  {
+    "folke/snacks.nvim",
+    opts = {
+      notifier = {
+        enabled = true,
+      },
+      dashboard = {
+        preset = {
+          header = table.concat({
+            [[                                                                       ]],
+            [[                                                                     ]],
+            [[       ████ ██████           █████      ██                     ]],
+            [[      ███████████             █████                             ]],
+            [[      █████████ ███████████████████ ███   ███████████   ]],
+            [[     █████████  ███    █████████████ █████ ██████████████   ]],
+            [[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
+            [[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
+            [[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
+            [[                                                                       ]],
+          }, "\n"),
+          keys = {
+            {
+              icon = " ",
+              key = "f",
+              desc = "Find File",
+              action = ":lua Snacks.dashboard.pick('files')",
+            },
+            {
+              icon = " ",
+              key = "n",
+              desc = "New File",
+              action = ":ene | startinsert",
+            },
+            {
+              icon = " ",
+              key = "g",
+              desc = "Find Text",
+              action = ":lua Snacks.dashboard.pick('live_grep')",
+            },
+            {
+              icon = " ",
+              key = "r",
+              desc = "Recent Files",
+              action = ":lua Snacks.dashboard.pick('oldfiles')",
+            },
+            {
+              icon = " ",
+              key = "c",
+              desc = "Config",
+              action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})",
+            },
+            {
+              icon = " ",
+              key = "s",
+              desc = "Session Search",
+              action = ":AutoSession search",
+            },
+            {
+              icon = "󰒲 ",
+              key = "L",
+              desc = "Lazy",
+              action = ":Lazy",
+              enabled = package.loaded.lazy ~= nil,
+            },
+            {
+              icon = " ",
+              key = "q",
+              desc = "Quit",
+              action = ":qa",
+            },
+          },
+        },
+      },
+    },
+  }, -- customize dashboard options
+  -- You can disable default plugins as follows:
   {
     "max397574/better-escape.nvim",
     enabled = false,
@@ -92,6 +104,10 @@ return { -- == Examples of Adding Plugins ==
     enabled = true,
   }, -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
   {
+    "folke/zen-mode.nvim",
+    lazy = true,
+  },
+  {
     "L3MON4D3/LuaSnip",
     config = function(plugin, opts)
       require "astronvim.plugins.configs.luasnip"(plugin, opts) -- include the default astronvim config that calls the setup call
@@ -99,6 +115,10 @@ return { -- == Examples of Adding Plugins ==
       local luasnip = require "luasnip"
       luasnip.filetype_extend("javascript", { "javascriptreact" })
     end,
+  },
+  {
+    "ThePrimeagen/vim-be-good",
+    lazy = true,
   },
   {
     "windwp/nvim-autopairs",

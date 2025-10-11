@@ -12,7 +12,7 @@ return {
 	opts = {
 		-- The following are already the default values, no need to provide them if these are already the settings you want.
 		session_lens = {
-			picker = "telescope", -- "telescope"|"snacks"|"fzf"|"select"|nil Pickers are detected automatically but you can also manually choose one. Falls back to vim.ui.select
+			picker = "snacks", -- "telescope"|"snacks"|"fzf"|"select"|nil Pickers are detected automatically but you can also manually choose one. Falls back to vim.ui.select
 			mappings = {
 				-- Mode can be a string or a table, e.g. {"i", "n"} for both insert and normal mode
 				delete_session = { "i", "<C-d>" },
@@ -25,20 +25,20 @@ return {
 				-- https://github.com/nvim-telescope/telescope.nvim/blob/master/doc/telescope.txt#L112
 				-- https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/themes.lua
 				--
-				border = true,
-				layout_config = {
-					width = 0.8, -- Can set width and height as percent of window
-					height = 0.5,
-				},
+				-- border = true,
+				-- layout_config = {
+				-- 	width = 0.8, -- Can set width and height as percent of window
+				-- 	height = 0.5,
+				-- },
 
 				-- For Snacks, you can set layout options here, see:
 				-- https://github.com/folke/snacks.nvim/blob/main/docs/picker.md#%EF%B8%8F-layouts
-				-- preset = "dropdown",
-				-- preview = false,
-				-- layout = {
-				-- 	width = 0.4,
-				-- 	height = 0.4,
-				-- },
+				preset = "dropdown",
+				preview = false,
+				layout = {
+					width = 0.4,
+					height = 0.4,
+				},
 
 				-- For Fzf-Lua, picker_opts just turns into winopts, see:
 				-- https://github.com/ibhagwan/fzf-lua#customization

@@ -1,84 +1,84 @@
--- line numbers
-vim.opt.nu = true
-vim.opt.relativenumber = true
+-- Set <space> as the leader key
+-- See `:help mapleader`
+--  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
--- indentation
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
--- vim.opt.expandtab = true
-vim.opt.smartindent = true
-vim.opt.autoindent = true
-vim.opt.wrap = true
+-- Set to true if you have a Nerd Font installed and selected in the terminal
+-- vim.g.have_nerd_font = false
 
--- backup and undo
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
-vim.opt.swapfile = false
-vim.opt.backup = false
-local home = os.getenv("HOME") or os.getenv("USERPROFILE") or ""
-vim.opt.undodir = tostring(home) .. "/.vim/undodir"
-vim.opt.undofile = true
+-- [[ Setting options ]]
+-- See `:help vim.o`
+-- NOTE: You can change these options as you wish!
+--  For more options, you can see `:help option-list`
 
--- search
-vim.opt.inccommand = "split"
+-- Make line numbers default
+vim.o.number = true
+vim.o.relativenumber = true
+-- You can also add relative line numbers, to help with jumping.
+--  Experiment for yourself to see if you like it!
+-- vim.o.relativenumber = true
 
--- UI
-vim.opt.background = "dark"
-vim.opt.termguicolors = true
-vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes"
+-- Enable mouse mode, can be useful for resizing splits for example!
+vim.o.mouse = 'a'
 
--- folding (for nvim-ufo)
--- vim.o.foldenable = true
--- vim.o.foldmethod = "manual"
--- vim.o.foldlevel = 99
--- vim.o.foldcolumn = "0"
+-- Don't show the mode, since it's already in the status line
+vim.o.showmode = false
 
--- window splits
--- vim.opt.splitright = true
--- vim.opt.splitbelow = true
+-- Sync clipboard between OS and Neovim.
+--  Schedule the setting after `UiEnter` because it can increase startup-time.
+--  Remove this option if you want your OS clipboard to remain independent.
+--  See `:help 'clipboard'`
+vim.schedule(function()
+  vim.o.clipboard = 'unnamedplus'
+end)
 
--- misc
--- vim.opt.isfname:append("@-@")
--- vim.opt.updatetime = 50
--- vim.opt.colorcolumn = "80"
-vim.opt.clipboard:append("unnamedplus")
--- vim.opt.mouse = "a"
+-- Enable break indent
+vim.o.breakindent = true
 
--- -- winbar highlights
--- vim.cmd('highlight winbar1 guifg=#ffffff')
--- vim.cmd('highlight winbar2 guifg=#ff5189')
+-- Save undo history
+vim.o.undofile = true
 
--- -- get full path of current file
--- local function get_full_path()
--- 	return vim.fn.expand('%:p')
--- end
+-- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
+vim.o.ignorecase = true
+vim.o.smartcase = true
 
--- -- get buffer count
--- local function get_buffer_count()
--- 	local buffers = vim.fn.execute('ls')
--- 	local count = 0
--- 	for line in buffers:gmatch('[^\r\n]+') do
--- 		if string.match(line, '^%s*%d+') then
--- 			count = count + 1
--- 		end
--- 	end
--- 	return tostring(count)
--- end
+-- Keep signcolumn on by default
+vim.o.signcolumn = 'yes'
 
--- -- update winbar
--- local function update_winbar()
--- 	local buf_ft = vim.bo.filetype
--- 	if buf_ft == "alpha" or buf_ft == "NvimTree" or buf_ft == "toggleterm" then
--- 		vim.opt.winbar = nil
--- 	else
--- 		local full_path = get_full_path()
--- 		local buffer_count = get_buffer_count()
--- 		vim.opt.winbar = string.format("%%#winbar1#m %%#winbar2#(%s) %%#winbar1# %s", buffer_count, full_path)
--- 	end
--- end
+-- Decrease update time
+vim.o.updatetime = 250
 
--- -- Autocommand to update winbar on relevant events
--- vim.api.nvim_create_autocmd({"BufWinEnter", "BufFilePost", "BufEnter", "WinEnter"}, {
--- 	callback = update_winbar
--- })
+-- Decrease mapped sequence wait time
+vim.o.timeoutlen = 300
+
+-- Configure how new splits should be opened
+vim.o.splitright = true
+vim.o.splitbelow = true
+
+-- Sets how neovim will display certain whitespace characters in the editor.
+--  See `:help 'list'`
+--  and `:help 'listchars'`
+--
+--  Notice listchars is set using `vim.opt` instead of `vim.o`.
+--  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
+--   See `:help lua-options`
+--   and `:help lua-options-guide`
+vim.o.list = true
+vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
+-- Preview substitutions live, as you type!
+vim.o.inccommand = 'split'
+
+-- Show which line your cursor is on
+vim.o.cursorline = true
+
+-- Minimal number of screen lines to keep above and below the cursor.
+vim.o.scrolloff = 10
+
+-- if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
+-- instead raise a dialog asking if you wish to save the current file(s)
+-- See `:help 'confirm'`
+vim.o.confirm = true
+
+vim.g.have_nerd_font = true

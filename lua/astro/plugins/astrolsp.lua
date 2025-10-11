@@ -12,15 +12,14 @@ return {
   opts = {
     -- Configuration table of features provided by AstroLSP
     features = {
-      codelens = true, -- enable/disable codelens refresh on start
-      inlay_hints = false, -- enable/disable inlay hints on start
+      codelens = true,        -- enable/disable codelens refresh on start
+      inlay_hints = false,    -- enable/disable inlay hints on start
       semantic_tokens = true, -- enable/disable semantic token highlighting
     },
     -- customize lsp formatting options
     formatting = {
       -- control auto formatting on save
       format_on_save = {
-        enabled = false, -- enable or disable format on save globally
         allow_filetypes = { -- enable format on save for specified filetypes only
           "lua",
           "python",
@@ -45,6 +44,7 @@ return {
     -- enable servers that you already have installed without mason
     servers = {
       -- "pyright"
+      "denols",
     },
     -- customize language server configuration options passed to `lspconfig`
     ---@diagnostic disable: missing-fields
@@ -98,16 +98,11 @@ return {
             return client.supports_method "textDocument/semanticTokens/full" and vim.lsp.semantic_tokens ~= nil
           end,
         },
-        -- ["<leader>pc"] = {
-        --   -- code formatting
-        --   function() vim.lsp.buf.format { async = true } end,
-        --   desc = "Format current buffer with LSP"
-        -- }
       },
     },
     -- A custom `on_attach` function to be run after the default `on_attach` function
     -- takes two parameters `client` and `bufnr`  (`:h lspconfig-setup`)
-     on_attach = function(client, bufnr)
+    on_attach = function(client, bufnr)
       -- this would disable semanticTokensProvider for all clients
       -- client.server_capabilities.semanticTokensProvider = nil
     end,

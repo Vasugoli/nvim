@@ -1,35 +1,67 @@
-return {
-    -- Comments
-    {
-        'echasnovski/mini.comment',
-        version = false,
-        event = { "BufReadPost", "BufNewFile" },
-        dependencies = {
-            "JoosepAlviste/nvim-ts-context-commentstring",
-        },
-        config = function()
-            -- disable the autocommand from ts-context-commentstring
-            require('ts_context_commentstring').setup {
-                enable_autocmd = false,
-            }
+return { -- Collection of various small independent plugins/modules
+    'echasnovski/mini.nvim',
+    config = function()
+        -- Better Around/Inside textobjects
+        --
+        -- Examples:
+        --  - va)  - [V]isually select [A]round [)]paren
+        --  - yinq - [Y]ank [I]nside [N]ext [Q]uote
+        --  - ci'  - [C]hange [I]nside [']quote
+        local ai = require('mini.ai')
+        ai.setup {
+            n_lines = 500
+        }
 
-            require("mini.comment").setup {
-                -- tsx, jsx, html , svelte comment support
-                options = {
-                    custom_commentstring = function()
-                        return require('ts_context_commentstring.internal').calculate_commentstring({ key =
-                            'commentstring' })
-                            or vim.bo.commentstring
-                    end,
-                },
+        local miniSplitJoin = require("mini.splitjoin")
+        miniSplitJoin.setup({
+            mappings = {
+                toggle = ""
+            } -- Disable default mapping
+        })
+        vim.keymap.set({"n", "x"}, "sj", function()
+            miniSplitJoin.join()
+        end, {
+            desc = "Join arguments"
+        })
+        vim.keymap.set({"n", "x"}, "sk", function()
+            miniSplitJoin.split()
+        end, {
+            desc = "Split arguments"
+        })
+
+        local move = require('mini.move')
+        move.setup( -- No need to copy this inside `setup()`. Will be used automatically.
+        {
+            -- Module mappings. Use `''` (empty string) to disable one.
+            mappings = {
+                -- Move visual selection in Visual mode. Defaults are Alt (Meta) + hjkl.
+                left = '<M-h>',
+                right = '<M-l>',
+                down = '<M-j>',
+                up = '<M-k>',
+
+                -- Move current line in Normal mode
+                line_left = '<M-h>',
+                line_right = '<M-l>',
+                line_down = '<M-j>',
+                line_up = '<M-k>'
+            },
+
+            -- Options which control moving behavior
+            options = {
+                -- Automatically reindent selection during linewise vertical move
+                reindent_linewise = true
             }
-        end
-    },
-    -- Surround
-    {
-        "echasnovski/mini.surround",
-        event = { "BufReadPre", "BufNewFile" },
-        opts = {
+        })
+
+
+        -- Add/delete/replace surroundings (brackets, quotes, etc.)
+        --
+        -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+        -- - sd'   - [S]urround [D]elete [']quotes
+        -- - sr)'  - [S]urround [R]eplace [)] [']
+        local surround = require('mini.surround')
+        surround.setup({
             -- Add custom surroundings to be used on top of builtin ones. For more
             -- information with examples, see `:h MiniSurround.config`.
             custom_surroundings = nil,
@@ -42,16 +74,16 @@ return {
             -- saiw surround with no whitespace
             -- saw surround with whitespace
             mappings = {
-                add = 'sa',            -- Add surrounding in Normal and Visual modes
-                delete = 'ds',         -- Delete surrounding
-                find = 'sf',           -- Find surrounding (to the right)
-                find_left = 'sF',      -- Find surrounding (to the left)
-                highlight = 'sh',      -- Highlight surrounding
-                replace = 'sr',        -- Replace surrounding
+                add = 'sa', -- Add surrounding in Normal and Visual modes
+                delete = 'ds', -- Delete surrounding
+                find = 'sf', -- Find surrounding (to the right)
+                find_left = 'sF', -- Find surrounding (to the left)
+                highlight = 'sh', -- Highlight surrounding
+                replace = 'sr', -- Replace surrounding
                 update_n_lines = 'sn', -- Update `n_lines`
 
-                suffix_last = 'l',     -- Suffix to search with "prev" method
-                suffix_next = 'n',     -- Suffix to search with "next" method
+                suffix_last = 'l', -- Suffix to search with "prev" method
+                suffix_next = 'n' -- Suffix to search with "next" method
             },
 
             -- Number of lines within which surrounding is searched
@@ -69,49 +101,22 @@ return {
             search_method = 'cover',
 
             -- Whether to disable showing non-error feedback
-            silent = false,
-        },
-    },
-    -- Get rid of whitespace
-    {
-        "echasnovski/mini.trailspace",
-        event = { "BufReadPost", "BufNewFile" },
-        config = function()
-            local miniTrailspace = require("mini.trailspace")
+            silent = false
+        })
 
-            miniTrailspace.setup({
-                only_in_normal_buffers = true,
-            })
-            vim.keymap.set("n", "<leader>cw", function() miniTrailspace.trim() end, { desc = "Erase Whitespace" })
+        -- Simple and easy statusline.
+        --  You could remove this setup call if you don't like it,
+        --  and try some other statusline plugin
 
-            -- Ensure highlight never reappears by removing it on CursorMoved
-            vim.api.nvim_create_autocmd("CursorMoved", {
-                pattern = "*",
-                callback = function()
-                    require("mini.trailspace").unhighlight()
-                end,
-            })
-        end,
-    },
-    -- Split & join
-    {
-        "echasnovski/mini.splitjoin",
-        event = { "BufReadPost", "BufNewFile" },
-        config = function()
-            local miniSplitJoin = require("mini.splitjoin")
-            miniSplitJoin.setup({
-                mappings = { toggle = "" }, -- Disable default mapping
-            })
-            vim.keymap.set({ "n", "x" }, "mj", function() miniSplitJoin.join() end, { desc = "Join arguments" })
-            vim.keymap.set({ "n", "x" }, "mk", function() miniSplitJoin.split() end, { desc = "Split arguments" })
-        end,
-    },
-    {
-        -- Automatic pairs
-        'nvim-mini/mini.pairs',
-        event = "VeryLazy",
-        config = function()
-            require("mini.pairs").setup({})
+        -- You can configure sections in the statusline by overriding their
+        -- default behavior. For example, here we set the section for
+        -- cursor location to LINE:COLUMN
+        ---@diagnostic disable-next-line: duplicate-set-field
+        statusline.section_location = function()
+            return '%2l:%-2v'
         end
-    },
+
+        -- ... and there is more!
+        --  Check out: https://github.com/echasnovski/mini.nvim
+    end
 }
