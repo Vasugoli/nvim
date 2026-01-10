@@ -1,7 +1,5 @@
--- for my own nvim config
 require("vasu.core")
+require("vasu.lsp")
 require("vasu.lazy")
 
--- for astro nvim
--- require("astro.lazy")
 

@@ -1,11 +1,13 @@
 return {{
     "williamboman/mason.nvim",
-    lazy = false,
+    event = "VeryLazy", -- or "BufReadPre"
     config = function()
         require("mason").setup()
     end
 }, {
     "williamboman/mason-lspconfig.nvim",
+    -- event = "VeryLazy",
+    event = {"InsertEnter", "CmdlineEnter"},
     config = function()
         require("mason-lspconfig").setup({
             -- ensure_installed = {"lua_ls", "ts_ls"}
@@ -14,7 +16,7 @@ return {{
     end
 }, {
     "neovim/nvim-lspconfig",
-    lazy = false,
+    event = { "BufReadPre", "BufNewFile" }, -- load only when you open a file
     config = function()
         local capabilities = require('cmp_nvim_lsp').default_capabilities()
 

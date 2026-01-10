@@ -2,7 +2,8 @@ return {
     {
         "f-person/git-blame.nvim",
         -- load the plugin at startup
-        event = "VeryLazy",
+        -- event = "VeryLazy",
+        event = "InsertEnter",
         -- Because of the keys part, you will be lazy loading this plugin.
         -- The plugin will only load once one of the keys is used.
         -- If you want to load the plugin at startup, add something like event = "VeryLazy",
@@ -18,7 +19,8 @@ return {
     },
     {
         "lewis6991/gitsigns.nvim",
-        event = "VeryLazy",
+        -- event = "VeryLazy",
+        event = "InsertEnter",
         config = function()
             require("gitsigns").setup({
                 signs = {

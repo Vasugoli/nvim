@@ -6,4 +6,17 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup("vasu.plugins", {})
+require("lazy").setup("vasu.plugins", {
+    rocks = {
+        enabled = false
+    },
+    defaults = {
+        lazy = true
+    },
+    performance = {
+        chache = {
+            enabled = true
+        }
+    }
+})
+

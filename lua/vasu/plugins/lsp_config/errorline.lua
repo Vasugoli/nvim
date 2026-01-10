@@ -1,7 +1,7 @@
 return {
 	{
 		"rachartier/tiny-inline-diagnostic.nvim",
-		event = "VeryLazy",
+		event = "InsertEnter",
 		priority = 1000,
 		config = function()
 			require("tiny-inline-diagnostic").setup({
@@ -150,7 +150,8 @@ return {
 	},
 	{
 		"folke/trouble.nvim",
-		event = "VeryLazy",
+		-- event = "VeryLazy",
+		event = "LspAttach",
 		opts = {}, -- for default options, refer to the configuration section for custom setup.
 		cmd = "Trouble",
 		keys = {

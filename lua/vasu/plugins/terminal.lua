@@ -1,8 +1,11 @@
 return {
     "akinsho/toggleterm.nvim",
     version = "*",
+    -- cmd = { "ToggleTerm", "TermExec" },
+    event = {"InsertEnter", "BufReadPost"},
     config = function()
         require("toggleterm").setup({
+            shell = vim.fn.executable "nu" and "nu" or "pwsh",
             float_opts = {
                 border = "curved", -- rounded corners
             },

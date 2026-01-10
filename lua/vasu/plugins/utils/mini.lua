@@ -1,5 +1,6 @@
 return { -- Collection of various small independent plugins/modules
     'echasnovski/mini.nvim',
+    event = "InsertEnter",
     config = function()
         -- Better Around/Inside textobjects
         --
@@ -18,12 +19,12 @@ return { -- Collection of various small independent plugins/modules
                 toggle = ""
             } -- Disable default mapping
         })
-        vim.keymap.set({"n", "x"}, "sj", function()
+        vim.keymap.set({"n", "x"}, "mj", function()
             miniSplitJoin.join()
         end, {
             desc = "Join arguments"
         })
-        vim.keymap.set({"n", "x"}, "sk", function()
+        vim.keymap.set({"n", "x"}, "mk", function()
             miniSplitJoin.split()
         end, {
             desc = "Split arguments"
@@ -53,7 +54,6 @@ return { -- Collection of various small independent plugins/modules
                 reindent_linewise = true
             }
         })
-
 
         -- Add/delete/replace surroundings (brackets, quotes, etc.)
         --
@@ -103,20 +103,5 @@ return { -- Collection of various small independent plugins/modules
             -- Whether to disable showing non-error feedback
             silent = false
         })
-
-        -- Simple and easy statusline.
-        --  You could remove this setup call if you don't like it,
-        --  and try some other statusline plugin
-
-        -- You can configure sections in the statusline by overriding their
-        -- default behavior. For example, here we set the section for
-        -- cursor location to LINE:COLUMN
-        ---@diagnostic disable-next-line: duplicate-set-field
-        statusline.section_location = function()
-            return '%2l:%-2v'
-        end
-
-        -- ... and there is more!
-        --  Check out: https://github.com/echasnovski/mini.nvim
     end
 }

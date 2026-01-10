@@ -1,7 +1,7 @@
 return {
     "folke/snacks.nvim",
     priority = 1000,
-    lazy = false,
+    event = "VeryLazy",
     dependencies = {"nvim-tree/nvim-web-devicons" -- for icons
     },
     keys = { -- Buffer management
@@ -69,19 +69,22 @@ return {
         end,
         desc = "which_key_ignore"
     }, -- Search functionality (matching telescope keymaps)
+    { "<leader>ls", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
     {
         "<leader>ff",
         function()
             Snacks.picker.files()
         end,
         desc = "Search Files"
-    }, {
-        "<leader>fg",
-        function()
-            Snacks.picker.grep()
-        end,
-        desc = "Search by Grep"
-    }, {
+    },
+    --  {
+    --     "<leader>fg",
+    --     function()
+    --         Snacks.picker.grep()
+    --     end,
+    --     desc = "Search by Grep"
+    -- },
+    {
         "<leader>fw",
         function()
             Snacks.picker.grep_word()
@@ -170,13 +173,14 @@ return {
             Snacks.notifier.hide()
         end,
         desc = "Dismiss All Notifications"
-    }, {
-        "<leader>hn",
-        function()
-            Snacks.notifier.show_history()
-        end,
-        desc = "Show Notification History"
-    }, -- Utility
+    },
+    --  {
+    --     "<leader>hn",
+    --     function()
+    --         Snacks.notifier.show_history()
+    --     end,
+    --     desc = "Show Notification History"
+    -- }, -- Utility
     {
         "<leader>N",
         desc = "Neovim News",
@@ -309,11 +313,25 @@ return {
             }
         },
         notifier = {
-            enabled = true,
+            enabled = false,
             timeout = 3000,
-            border = "rounded"
+            border = "rounded",
+            width = { min = 40, max = 0.4 },
+            height = { min = 1, max = 0.6 },
+            margin = { top = 0, right = 1, bottom = 0 },
+            padding = true,
+            sort = { "level", "added" },
+            level = vim.log.levels.TRACE,
+            icons = {
+                error = " ",
+                warn = " ",
+                info = " ",
+                debug = " ",
+                trace = " ",
+            },
         },
         notifications_history = {
+            enabled = false,
             border = "rounded",
             zindex = 100,
             width = 0.6,

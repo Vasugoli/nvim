@@ -8,6 +8,22 @@ return {
   opts = {
     enable_named_colors = false,
     virtual_symbol = "󱓻",
+    ft = {
+      "css",
+      "scss",
+      "html",
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "lua",
+      "vim",
+      "yaml",
+      "xml",
+      "markdown",
+      "svelte",
+      "rust"
+    },
     exclude_buffer = function(bufnr)
       -- Check if buffer is valid and not too large
       if not vim.api.nvim_buf_is_valid(bufnr) then

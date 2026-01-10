@@ -1,6 +1,6 @@
 return {
   "stevearc/aerial.nvim",
-  event = "VeryLazy",
+  event = "InsertEnter",
   keys = {
     { "<Leader>lS", function() require("aerial").toggle() end, desc = "Symbols outline" },
     { "]y", function() require("aerial").next(vim.v.count1) end, desc = "Next symbol" },

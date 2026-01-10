@@ -1,0 +1,36 @@
+# Neovim
+*.swp
+*.swo
+*.swn
+*~
+.netrwhist
+
+# Undo files
+*.un~
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Log files
+*.log
+
+# Plugin data (if stored locally)
+plugin/
+spell/
+
+# LSP logs
+lsp.log
+lsp*.log
+
+# Debug files
+*.dap
+
+# Session files (if you want to ignore them)
+# Session.vim
+# .session
+
+# Lua compiled files
+*.luac
+lazy-lock.json

@@ -1,5 +1,6 @@
 return {
     "arnamak/stay-centered.nvim",
+    event = { "BufReadPost", "BufNewFile" }, -- or "VeryLazy"
     config = function()
         require("stay-centered").setup({
             centered_window_width = 120,

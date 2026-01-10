@@ -3,11 +3,13 @@ return { -- You can easily change to a different colorscheme.
     -- change the command in the config to whatever the name of that colorscheme is.
     --
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-    'folke/tokyonight.nvim',
+    -- 'folke/tokyonight.nvim',
+    "scottmckendry/cyberdream.nvim",
     priority = 1000, -- Make sure to load this before all the other start plugins.
+    event = "VimEnter",
     config = function()
         ---@diagnostic disable-next-line: missing-fields
-        require('tokyonight').setup {
+        require('cyberdream').setup {
             transparent = true, -- Enable this to disable setting the background color
             terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
             styles = {
@@ -19,7 +21,7 @@ return { -- You can easily change to a different colorscheme.
 
         -- Load the colorscheme here.
         -- Like many other themes, this one has different styles, and you could load
-        -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-        vim.cmd.colorscheme 'tokyonight-storm'
+        -- any other, such as 'cyberdream', 'cyberdream-moon', or 'cyberdream-day'.
+        vim.cmd.colorscheme 'cyberdream'
     end
 }
