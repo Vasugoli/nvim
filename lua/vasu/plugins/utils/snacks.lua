@@ -2,8 +2,18 @@ return {
     "folke/snacks.nvim",
     priority = 1000,
     event = "VeryLazy",
-    dependencies = {"nvim-tree/nvim-web-devicons" -- for icons
-    },
+    dependencies = {{
+        "nvim-tree/nvim-web-devicons",
+        opts = {
+            -- globally enable different highlight colors per icon (default to true)
+            color_icons = true,
+            -- globally enable default icons (default to false)
+            default = true,
+            -- globally enable "strict" selection of icons - icon will be looked up in
+            -- different tables, first by filename, and if not found by extension
+            strict = true
+        }
+    }},
     keys = { -- Buffer management
     {
         "<leader>x",
@@ -69,15 +79,19 @@ return {
         end,
         desc = "which_key_ignore"
     }, -- Search functionality (matching telescope keymaps)
-    { "<leader>ls", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
     {
+        "<leader>ls",
+        function()
+            Snacks.picker.lsp_workspace_symbols()
+        end,
+        desc = "LSP Workspace Symbols"
+    }, {
         "<leader>ff",
         function()
             Snacks.picker.files()
         end,
         desc = "Search Files"
-    },
-    --  {
+    }, --  {
     --     "<leader>fg",
     --     function()
     --         Snacks.picker.grep()
@@ -173,8 +187,7 @@ return {
             Snacks.notifier.hide()
         end,
         desc = "Dismiss All Notifications"
-    },
-    --  {
+    }, --  {
     --     "<leader>hn",
     --     function()
     --         Snacks.notifier.show_history()
@@ -269,32 +282,32 @@ return {
                                        [[                                                                       ]]},
                     "\n"),
                 keys = {{
-                    icon = " ",
+                    icon = "󰈞 ",
                     key = "f",
                     desc = "Find File",
                     action = ":lua Snacks.dashboard.pick('files')"
                 }, {
-                    icon = " ",
+                    icon = "󰜄 ",
                     key = "n",
                     desc = "New File",
                     action = ":ene | startinsert"
                 }, {
-                    icon = " ",
+                    icon = "󱎸 ",
                     key = "g",
                     desc = "Find Text",
                     action = ":lua Snacks.dashboard.pick('live_grep')"
                 }, {
-                    icon = " ",
+                    icon = "󰋚 ",
                     key = "r",
                     desc = "Recent Files",
                     action = ":lua Snacks.dashboard.pick('oldfiles')"
                 }, {
-                    icon = " ",
+                    icon = "󰒓 ",
                     key = "c",
                     desc = "Config",
                     action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})"
                 }, {
-                    icon = " ",
+                    icon = "󱁤 ",
                     key = "s",
                     desc = "Session Search",
                     action = ":AutoSession search"
@@ -305,7 +318,7 @@ return {
                     action = ":Lazy",
                     enabled = package.loaded.lazy ~= nil
                 }, {
-                    icon = " ",
+                    icon = "󰿅 ",
                     key = "q",
                     desc = "Quit",
                     action = ":qa"
@@ -316,19 +329,29 @@ return {
             enabled = false,
             timeout = 3000,
             border = "rounded",
-            width = { min = 40, max = 0.4 },
-            height = { min = 1, max = 0.6 },
-            margin = { top = 0, right = 1, bottom = 0 },
+            width = {
+                min = 40,
+                max = 0.4
+            },
+            height = {
+                min = 1,
+                max = 0.6
+            },
+            margin = {
+                top = 0,
+                right = 1,
+                bottom = 0
+            },
             padding = true,
-            sort = { "level", "added" },
+            sort = {"level", "added"},
             level = vim.log.levels.TRACE,
             icons = {
                 error = " ",
                 warn = " ",
                 info = " ",
                 debug = " ",
-                trace = " ",
-            },
+                trace = " "
+            }
         },
         notifications_history = {
             enabled = false,

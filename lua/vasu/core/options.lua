@@ -106,12 +106,16 @@ opt.termguicolors = true -- True color support
 -- opt.timeoutlen = vim.g.vscode and 1000 or 300 -- Lower than default (1000) to quickly trigger which-key
 opt.undofile = true
 opt.undolevels = 10000
-opt.updatetime = 200 -- Save swap file and trigger CursorHold
+-- opt.updatetime = 200 -- Save swap file and trigger CursorHold
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
 opt.wildmode = "longest:full,full" -- Command-line completion mode
 opt.winminwidth = 5 -- Minimum window width
 opt.winborder = "rounded"
 opt.wrap = false -- Disable line wrap
+
+opt.shada = "'100,<50,s10,h"
+-- opt.shadafile = "NONE"
+
 
 -- Fix markdown indentation settings
 vim.g.markdown_recommended_style = 0

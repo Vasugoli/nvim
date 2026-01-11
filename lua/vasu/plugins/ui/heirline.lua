@@ -1,325 +1,269 @@
 return {
-    "rebelot/heirline.nvim",
-    event = "BufEnter",
-    config = function()
-        local conditions = require("heirline.conditions")
-        local utils = require("heirline.utils")
+  "rebelot/heirline.nvim",
+  event = "BufEnter",
+  dependencies = { "nvim-tree/nvim-web-devicons" },
+  config = function()
+    local conditions = require("heirline.conditions")
+    local devicons = require("nvim-web-devicons")
 
-        -- Define colors
-        local colors = {
-            bg = "#1e1e2e",
-            bright_bg = "#3c4043",
-            bright_fg = "#e8e3e3",
-            red = "#e27878",
-            dark_red = "#b02a37",
-            green = "#84a0c6",
-            blue = "#8fbcbb",
-            gray = "#a89984",
-            orange = "#e39b7b",
-            purple = "#d2a6ff",
-            cyan = "#89ddff",
-            diag_warn = "#ffa500",
-            diag_error = "#f44747",
-            diag_hint = "#4FC1FF",
-            diag_info = "#FFCC66",
-            git_del = "#ffa500",
-            git_add = "#109868",
-            git_change = "#ffaa00",
+    local colors = {
+      bg = "NONE",
+      fg = "#E6EDF3",
+      dim = "#8B949E",
+      blue   = "#58A6FF",
+      green  = "#3FB950",
+      purple = "#A371F7",
+      red    = "#FF7B72",
+      yellow = "#D29922",
+      cyan   = "#39C5CF",
+    }
+
+    local Align = { provider = "%=" }
+
+    local NeonSep = {
+      -- example of a separator with a highlight from the colors table
+      -- | ,  ,  ,  ,  ,  ,  ,
+      provider = "|",
+      hl = { fg = colors.cyan },
+    }
+
+    --------------------------------------------------
+    -- MODE
+    --------------------------------------------------
+    local ViMode = {
+      init = function(self)
+        self.mode = vim.fn.mode(1)
+      end,
+      static = {
+        names = {
+          n = "NORMAL", i = "INSERT", v = "VISUAL", V = "V-LINE",
+          ["\22"] = "V-BLOCK", c = "COMMAND", R = "REPLACE", t = "TERMINAL",
+        },
+        icons = {
+          n = "󰋜", i = "󰏫", v = "󰈈", V = "󰈈",
+          ["\22"] = "󰈈", c = "󰘳", R = "󰛔", t = "",
+        },
+        colors = {
+          n = "green", i = "blue", v = "purple", V = "purple",
+          ["\22"] = "purple", c = "yellow", R = "red", t = "cyan",
+        },
+      },
+      provider = function(self)
+        local m = self.mode:sub(1, 1)
+        return " " .. (self.icons[m] or "") .. " " .. (self.names[self.mode] or self.mode) .. " "
+      end,
+      hl = function(self)
+        local m = self.mode:sub(1, 1)
+        return { fg = colors.bg, bg = colors[self.colors[m]], bold = true }
+      end,
+      update = "ModeChanged",
+    }
+
+    --------------------------------------------------
+    -- FILE
+    --------------------------------------------------
+    local File = {
+      init = function(self)
+        self.name = vim.fn.expand("%:t")
+        self.ext = vim.fn.expand("%:e")
+        self.icon = devicons.get_icon(self.name, self.ext, { default = true })
+      end,
+      provider = function(self)
+        if self.name == "" then return " 󰈤 [No Name] " end
+        return " " .. (self.icon or "󰈤") .. " " .. self.name .. (vim.bo.modified and " ●" or "") .. " "
+      end,
+      hl = { fg = colors.fg },
+    }
+
+    --------------------------------------------------
+    -- GIT BRANCH
+    --------------------------------------------------
+    local Git = {
+      condition = conditions.is_git_repo,
+      init = function(self)
+        self.status = vim.b.gitsigns_status_dict
+      end,
+      provider = function(self)
+        return "  " .. self.status.head .. " "
+      end,
+      hl = { fg = colors.purple },
+    }
+
+    --------------------------------------------------
+    -- GIT DIFF
+    --------------------------------------------------
+    local GitDiff = {
+      condition = conditions.is_git_repo,
+      init = function(self)
+        self.status = vim.b.gitsigns_status_dict
+      end,
+      provider = function(self)
+        local parts = {}
+        if self.status.added and self.status.added > 0 then
+          table.insert(parts, " " .. self.status.added)
+        end
+        if self.status.changed and self.status.changed > 0 then
+          table.insert(parts, " " .. self.status.changed)
+        end
+        if self.status.removed and self.status.removed > 0 then
+          table.insert(parts, " " .. self.status.removed)
+        end
+        if #parts == 0 then return "" end
+        return " " .. table.concat(parts, "  ") .. " "
+      end,
+      hl = { fg = colors.dim },
+    }
+
+    --------------------------------------------------
+    -- DIAGNOSTICS
+    --------------------------------------------------
+    local Diagnostics = {
+      condition = conditions.has_diagnostics,
+      static = { error = " ", warn = " ", info = " ", hint = "󰌵 " },
+      init = function(self)
+        self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
+        self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
+        self.info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
+        self.hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
+      end,
+      provider = function(self)
+        return " "
+          .. (self.errors > 0 and self.error .. self.errors .. " " or "")
+          .. (self.warnings > 0 and self.warn .. self.warnings .. " " or "")
+          .. (self.info > 0 and self.info .. self.info .. " " or "")
+          .. (self.hints > 0 and self.hint .. self.hints .. " " or "")
+      end,
+      hl = { fg = colors.red },
+      update = { "DiagnosticChanged", "BufEnter" },
+    }
+
+    --------------------------------------------------
+    -- CENTERED LSP (NEON CAPSULE)
+    --------------------------------------------------
+    local LSP = {
+      condition = function()
+        for _, c in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+          if c.name ~= "copilot" then return true end
+        end
+        return false
+      end,
+      provider = function()
+        local names, seen = {}, {}
+        local blacklist = { ["copilot"] = true, ["github copilot"] = true, ["null-ls"] = true, ["stylua"] = true }
+        local rename = {
+          ["lua_ls"] = "LuaLS", ["pyright"] = "Pyright", ["tsserver"] = "TS",
+          ["gopls"] = "Go", ["clangd"] = "C/C++", ["rust_analyzer"] = "Rust",
         }
+        for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+          local name = client.name:lower()
+          if not blacklist[name] then
+            local display = rename[name] or client.name
+            if not seen[display] then
+              table.insert(names, display)
+              seen[display] = true
+            end
+          end
+        end
+        if #names == 0 then return "" end
+        return " 󰅩 " .. table.concat(names, ", ") .. " "
+      end,
+      hl = { fg = colors.cyan, bold = true },
+    }
 
-        -- Separators
-        local separators = {
-            left = "",
-            right = "",
-            left_thin = "│",
-            right_thin = "│",
-        }
+    --------------------------------------------------
+    -- DAP STATUS
+    --------------------------------------------------
+    local DAP = {
+      condition = function()
+        local ok, dap = pcall(require, "dap")
+        return ok and dap.session() ~= nil
+      end,
+      provider = function()
+        local ok, dap = pcall(require, "dap")
+        if not ok then return "" end
+        local status = dap.status()
+        if status == "" then return "" end
+        return "  " .. status .. " "
+      end,
+      hl = { fg = colors.red, bold = true },
+    }
 
-        -- Mode component with separators
-        local ViMode = {
-            init = function(self)
-                self.mode = vim.fn.mode(1)
-                if not self.once then
-                    vim.api.nvim_create_autocmd("ModeChanged", {
-                        pattern = "*:*o",
-                        command = 'redrawstatus'
-                    })
-                    self.once = true
-                end
-            end,
-            static = {
-                mode_names = {
-                    n = "NORMAL",
-                    no = "N-PENDING",
-                    nov = "N-PENDING",
-                    noV = "N-PENDING",
-                    ["no\22"] = "N-PENDING",
-                    niI = "NORMAL",
-                    niR = "NORMAL",
-                    niV = "NORMAL",
-                    nt = "NORMAL",
-                    v = "VISUAL",
-                    vs = "VISUAL",
-                    V = "V-LINE",
-                    Vs = "V-LINE",
-                    ["\22"] = "V-BLOCK",
-                    ["\22s"] = "V-BLOCK",
-                    s = "SELECT",
-                    S = "S-LINE",
-                    ["\19"] = "S-BLOCK",
-                    i = "INSERT",
-                    ic = "INSERT",
-                    ix = "INSERT",
-                    R = "REPLACE",
-                    Rc = "REPLACE",
-                    Rx = "REPLACE",
-                    Rv = "V-REPLACE",
-                    Rvc = "V-REPLACE",
-                    Rvx = "V-REPLACE",
-                    c = "COMMAND",
-                    cv = "COMMAND",
-                    r = "PROMPT",
-                    rm = "MORE",
-                    ["r?"] = "CONFIRM",
-                    ["!"] = "SHELL",
-                    t = "TERMINAL",
-                },
-                mode_colors = {
-                    n = "green",
-                    i = "blue",
-                    v = "orange",
-                    V = "orange",
-                    ["\22"] = "orange",
-                    c = "purple",
-                    s = "cyan",
-                    S = "cyan",
-                    ["\19"] = "cyan",
-                    R = "red",
-                    r = "red",
-                    ["!"] = "red",
-                    t = "bright_bg",
-                }
-            },
-            provider = function(self)
-                return " " .. self.mode_names[self.mode] .. " "
-            end,
-            hl = function(self)
-                local mode = self.mode:sub(1, 1)
-                return { fg = "bright_bg", bg = self.mode_colors[mode] or "gray", bold = true }
-            end,
-            update = {
-                "ModeChanged",
-                pattern = "*:*",
-                callback = vim.schedule_wrap(function()
-                    vim.cmd("redrawstatus")
-                end),
-            },
-        }
+    --------------------------------------------------
+    -- PROJECT CAPSULE
+    --------------------------------------------------
+    local ProjectCapsule = {
+      provider = function()
+        local parts = {}
+        local cwd = vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+        table.insert(parts, "󰉋 " .. cwd)
 
-        -- Mode separator
-        local ModeSeperator = {
-            provider = separators.right,
-            hl = function()
-                local mode = vim.fn.mode(1):sub(1, 1)
-                local mode_colors = {
-                    n = "green",
-                    i = "blue",
-                    v = "orange",
-                    V = "orange",
-                    ["\22"] = "orange",
-                    c = "purple",
-                    s = "cyan",
-                    S = "cyan",
-                    ["\19"] = "cyan",
-                    R = "red",
-                    r = "red",
-                    ["!"] = "red",
-                    t = "bright_bg",
-                }
-                return { fg = mode_colors[mode] or "gray", bg = "bright_bg" }
-            end,
-        }
+        local venv = os.getenv("VIRTUAL_ENV")
+        if venv then
+          local name = vim.fn.fnamemodify(venv, ":t")
+          table.insert(parts, "󰌠 " .. name)
+        end
 
-        -- Git branch with icon and separator
-        local Git = {
-            condition = conditions.is_git_repo,
-            init = function(self)
-                self.status_dict = vim.b.gitsigns_status_dict
-                self.has_changes = self.status_dict.added ~= 0 or self.status_dict.removed ~= 0 or self.status_dict.changed ~= 0
-            end,
-            {
-                provider = function(self)
-                    return "  " .. (self.status_dict.head or "main")
-                end,
-                hl = { fg = "bright_fg", bg = "bright_bg", bold = true },
-            },
-            {
-                condition = function(self)
-                    return self.has_changes
-                end,
-                provider = " ",
-                hl = { bg = "bright_bg" },
-            },
-            {
-                provider = function(self)
-                    local count = self.status_dict.added or 0
-                    return count > 0 and ("+" .. count)
-                end,
-                hl = { fg = "git_add", bg = "bright_bg", bold = true },
-            },
-            {
-                provider = function(self)
-                    local count = self.status_dict.removed or 0
-                    return count > 0 and ("-" .. count)
-                end,
-                hl = { fg = "git_del", bg = "bright_bg", bold = true },
-            },
-            {
-                provider = function(self)
-                    local count = self.status_dict.changed or 0
-                    return count > 0 and ("~" .. count)
-                end,
-                hl = { fg = "git_change", bg = "bright_bg", bold = true },
-            },
-        }
+        if vim.fn.executable("node") == 1 then
+          local handle = io.popen("node -v 2>/dev/null")
+          if handle then
+            local result = handle:read("*a")
+            handle:close()
+            local major = result and result:match("v(%d+)")
+            if major then table.insert(parts, "󰎙 v" .. major) end
+          end
+        end
 
-        -- Git separator
-        local GitSeparator = {
-            condition = conditions.is_git_repo,
-            provider = separators.right,
-            hl = { fg = "bright_bg", bg = "bg" },
-        }
+        return " " .. table.concat(parts, " | ") .. " "
+      end,
+      hl = { fg = colors.dim },
+    }
 
-        -- File info with icon
-        local FileNameBlock = {
-            init = function(self)
-                self.filename = vim.api.nvim_buf_get_name(0)
-            end,
-            {
-                provider = function(self)
-                    local filename = vim.fn.fnamemodify(self.filename, ":t")
-                    if filename == "" then return " [No Name]" end
-                    return " " .. filename
-                end,
-                hl = { fg = "cyan", bold = true },
-            },
-            -- File modified indicator
-            {
-                condition = function()
-                    return vim.bo.modified
-                end,
-                provider = " ●",
-                hl = { fg = "red" },
-            },
-            -- File readonly indicator
-            {
-                condition = function()
-                    return not vim.bo.modifiable or vim.bo.readonly
-                end,
-                provider = " ",
-                hl = { fg = "orange" },
-            },
-        }
+    --------------------------------------------------
+    -- CLOCK
+    --------------------------------------------------
+    local Clock = {
+      provider = function()
+        return "  " .. os.date("%H:%M:%S") .. " "
+      end,
+      hl = { fg = colors.yellow },
+    }
 
-        -- LSP diagnostics with icons
-        local Diagnostics = {
-            condition = conditions.has_diagnostics,
-            static = {
-                error_icon = " ",
-                warn_icon = " ",
-                info_icon = " ",
-                hint_icon = " ",
-            },
-            init = function(self)
-                self.errors = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.ERROR })
-                self.warnings = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.WARN })
-                self.hints = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.HINT })
-                self.info = #vim.diagnostic.get(0, { severity = vim.diagnostic.severity.INFO })
-            end,
-            update = { "DiagnosticChanged", "BufEnter" },
-            {
-                provider = function(self)
-                    return self.errors > 0 and (self.error_icon .. self.errors .. " ")
-                end,
-                hl = { fg = "diag_error" },
-            },
-            {
-                provider = function(self)
-                    return self.warnings > 0 and (self.warn_icon .. self.warnings .. " ")
-                end,
-                hl = { fg = "diag_warn" },
-            },
-            {
-                provider = function(self)
-                    return self.info > 0 and (self.info_icon .. self.info .. " ")
-                end,
-                hl = { fg = "diag_info" },
-            },
-            {
-                provider = function(self)
-                    return self.hints > 0 and (self.hint_icon .. self.hints)
-                end,
-                hl = { fg = "diag_hint" },
-            },
-        }
+    --------------------------------------------------
+    -- RULER
+    --------------------------------------------------
+    local Ruler = {
+      provider = " %l:%c  %P ",
+      hl = { fg = colors.yellow },
+    }
 
-        -- LSP status
-        local LSPActive = {
-            condition = function()
-                return #vim.lsp.get_clients({ bufnr = 0 }) > 0
-            end,
-            provider = function()
-                local names = {}
-                for _, server in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
-                    table.insert(names, server.name)
-                end
-                return " [" .. table.concat(names, " ") .. "]"
-            end,
-            hl = { fg = "green", bold = true },
-        }
+    --------------------------------------------------
+    -- SCROLLBAR
+    --------------------------------------------------
+    local ScrollBar = {
+      static = { sbar = { "▁","▂","▃","▄","▅","▆","▇","█" } },
+      provider = function(self)
+        local curr = vim.api.nvim_win_get_cursor(0)[1]
+        local total = vim.api.nvim_buf_line_count(0)
+        local i = math.floor((curr - 1) / total * #self.sbar) + 1
+        return self.sbar[i]
+      end,
+      hl = { fg = colors.blue },
+    }
 
-        -- File type with icon
-        local FileType = {
-            provider = function()
-                return string.upper(vim.bo.filetype)
-            end,
-            hl = { fg = "blue", bold = true },
-        }
+    --------------------------------------------------
+    -- STATUSLINE
+    --------------------------------------------------
+    require("heirline").setup({
+      statusline = {
+        ViMode, File, Git, GitDiff,Diagnostics,
+        Align,
+        LSP,
+        Align,
+        DAP,ProjectCapsule,  Clock, Ruler,  ScrollBar,
+      },
+      opts = { colors = colors },
+    })
 
-        -- Position info
-        local Ruler = {
-            provider = " %l:%c %P ",
-            hl = { fg = "yellow", bold = true },
-        }
-
-        -- Spacer
-        local Align = { provider = "%=" }
-        local Space = { provider = " " }
-
-        -- Setup statusline
-        require("heirline").setup({
-            statusline = {
-                ViMode,
-                ModeSeperator,
-                Git,
-                GitSeparator,
-                FileNameBlock,
-                Space,
-                Align,
-                Diagnostics,
-                Space,
-                LSPActive,
-                Space,
-                FileType,
-                Space,
-                Ruler,
-            },
-            opts = {
-                colors = colors,
-            },
-        })
-
-        -- Set colors
-        vim.api.nvim_set_hl(0, "StatusLine", { bg = colors.bright_bg, fg = colors.bright_fg })
-    end,
+    vim.api.nvim_set_hl(0, "StatusLine", { bg = "NONE" })
+  end,
 }
