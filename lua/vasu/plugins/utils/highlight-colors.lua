@@ -1,13 +1,16 @@
 return {
   "brenoprata10/nvim-highlight-colors",
-  event = { "BufReadPre", "BufNewFile" },
-  cmd = "HighlightColors",
+  event = { "BufReadPost", "BufNewFile" }, -- load a bit later = faster startup
+  cmd = { "HighlightColors" },
   keys = {
-    { "<Leader>uz", function() vim.cmd.HighlightColors("Toggle") end, desc = "Toggle color highlight" }
+    { "<Leader>uz", "<cmd>HighlightColors Toggle<CR>", desc = "Toggle color highlight" }
   },
   opts = {
-    enable_named_colors = false,
+    enable_named_colors = false, -- faster, less noise
+    enable_tailwind = true, -- if you use Tailwind (disable if not)
+    render = "virtual", -- less intrusive, better UX
     virtual_symbol = "󱓻",
+
     ft = {
       "css",
       "scss",
@@ -24,15 +27,23 @@ return {
       "svelte",
       "rust"
     },
+
     exclude_buffer = function(bufnr)
-      -- Check if buffer is valid and not too large
       if not vim.api.nvim_buf_is_valid(bufnr) then
         return true
       end
 
-      -- Check if buffer is too large (> 1MB)
-      local size = vim.api.nvim_buf_get_offset(bufnr, vim.api.nvim_buf_line_count(bufnr))
-      return size > 1024 * 1024
+      local name = vim.api.nvim_buf_get_name(bufnr)
+      if name == "" then
+        return true
+      end
+
+      local ok, stats = pcall(vim.loop.fs_stat, name)
+      if ok and stats and stats.size > 1024 * 1024 then
+        return true -- skip files > 1MB
+      end
+
+      return false
     end,
   },
 }
