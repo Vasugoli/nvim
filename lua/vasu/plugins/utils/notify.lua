@@ -7,7 +7,7 @@ return {
     notify.setup({
       stages = "fade_in_slide_out",
       render = "compact",
-      timeout = 3000,
+      timeout = 2000,
       max_width = nil,
       max_height = nil,
       background_colour = "#000000",

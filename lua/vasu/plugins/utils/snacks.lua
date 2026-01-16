@@ -407,6 +407,13 @@ return {
                     wrap = true
                 }
             }
+        },
+        indent = {
+            enabled = false,
+            animate = true,
+        },
+        terminal = {
+            enabled = true
         }
     },
     config = function(_, opts)
