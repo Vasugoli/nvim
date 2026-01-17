@@ -410,7 +410,9 @@ return {
         },
         indent = {
             enabled = false,
-            animate = true,
+            animate = {
+                enabled = true
+            }
         },
         terminal = {
             enabled = true

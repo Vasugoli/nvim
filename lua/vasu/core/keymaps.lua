@@ -17,10 +17,10 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -30,6 +30,52 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- Window focus
+vim.keymap.set("n", "]w", "<C-w>w", { desc = "Next window" })
+vim.keymap.set("n", "[w", "<C-w>W", { desc = "Previous window" })
+
+-- Split management
+vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Vertical split" })
+vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Horizontal split" })
+vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize splits" })
+vim.keymap.set("n", "<leader>sc", "<C-w>c", { desc = "Close split" })
+
+-- Create splits
+vim.keymap.set("n", "||", "<cmd>vsplit<CR>", { desc = "Vertical split" })
+vim.keymap.set("n", "//", "<cmd>split<CR>", { desc = "Horizontal split" })
+-- vim.keymap.set("n", "]s", "<cmd>vsplit<CR>", { desc = "Vertical split" })
+-- vim.keymap.set("n", "[s", "<cmd>split<CR>", { desc = "Horizontal split" })
+
+-- Resize splits
+vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { silent = true, desc = "Increase height" })
+vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { silent = true, desc = "Decrease height" })
+vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { silent = true, desc = "Decrease width" })
+vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { silent = true, desc = "Increase width" })
+
+-- Close splits / windows
+vim.keymap.set("n", "]c", "<C-w>c", { desc = "Close current split" })
+vim.keymap.set("n", "]o", "<C-w>o", { desc = "Close other splits (only this one)" })
+
+-- Tab navigation
+vim.keymap.set("n", "]t", ":tabnext<CR>", { desc = "Next tab" })
+vim.keymap.set("n", "[t", ":tabprevious<CR>", { desc = "Previous tab" })
+vim.keymap.set("n", "]T", ":tabnew<CR>", { desc = "New tab" })
+vim.keymap.set("n", "]tc", ":tabclose<CR>", { desc = "Close tab" })
+
+-- Buffer navigation
+vim.keymap.set("n", "]b", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "[b", ":bprevious<CR>", { desc = "Previous buffer" })
+vim.keymap.set("n", "]B", ":blast<CR>", { desc = "Last buffer" })
+vim.keymap.set("n", "[B", ":bfirst<CR>", { desc = "First buffer" })
+
+-- Move buffer between windows
+vim.keymap.set("n", "<leader>bh", "<C-w>h<C-w>r", { desc = "Move buffer left" })
+vim.keymap.set("n", "<leader>bl", "<C-w>l<C-w>r", { desc = "Move buffer right" })
+vim.keymap.set("n", "<leader>bj", "<C-w>j<C-w>r", { desc = "Move buffer down" })
+vim.keymap.set("n", "<leader>bk", "<C-w>k<C-w>r", { desc = "Move buffer up" })
+
+
 
 -- Switch focus between NvimTree and editor
 vim.keymap.set('n', '<leader>o', function()
