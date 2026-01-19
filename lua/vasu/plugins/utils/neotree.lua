@@ -5,7 +5,8 @@ return {
     "nvim-tree/nvim-web-devicons",
     "MunifTanjim/nui.nvim",
   },
-  cmd = "Neotree",
+  -- cmd = "Neotree",
+  event = "VimEnter",
   keys = {
     { "<Leader>e", "<Cmd>Neotree toggle<CR>", desc = "Toggle Explorer" },
     { "<Leader>ef", "<Cmd>Neotree focus filesystem<CR>", desc = "Focus Files" },
@@ -241,13 +242,16 @@ return {
           ["<C-k>"] = "move_cursor_up",
         },
       },
+      open_file = {
+        quit_on_open = true, 
+      },
       filesystem = {
         follow_current_file = {
           enabled = true,
           leave_dirs_open = false,
         },
         group_empty_dirs = false,
-        hijack_netrw_behavior = "open_current",
+        hijack_netrw_behavior = "disabled",
         use_libuv_file_watcher = vim.fn.has "win32" ~= 1,
         filtered_items = {
           visible = false,

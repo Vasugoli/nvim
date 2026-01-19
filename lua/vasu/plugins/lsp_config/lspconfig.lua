@@ -1,13 +1,13 @@
 return {{
     "williamboman/mason.nvim",
-    event = "VeryLazy", -- or "BufReadPre"
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
         require("mason").setup()
     end
 }, {
     "williamboman/mason-lspconfig.nvim",
     -- event = "VeryLazy",
-    event = {"InsertEnter", "CmdlineEnter"},
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
         require("mason-lspconfig").setup({
             -- ensure_installed = {"lua_ls", "ts_ls"}
