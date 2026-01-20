@@ -50,8 +50,8 @@ vim.keymap.set("n", "//", "<cmd>split<CR>", { desc = "Horizontal split" })
 -- Resize splits
 vim.keymap.set("n", "<C-Up>", ":resize +2<CR>", { silent = true, desc = "Increase height" })
 vim.keymap.set("n", "<C-Down>", ":resize -2<CR>", { silent = true, desc = "Decrease height" })
-vim.keymap.set("n", "<C-Left>", ":vertical resize -2<CR>", { silent = true, desc = "Decrease width" })
-vim.keymap.set("n", "<C-Right>", ":vertical resize +2<CR>", { silent = true, desc = "Increase width" })
+vim.keymap.set("n", "<C-Left>", ":vertical resize +2<CR>", { silent = true, desc = "Decrease width" })
+vim.keymap.set("n", "<C-Right>", ":vertical resize -2<CR>", { silent = true, desc = "Increase width" })
 
 -- Close splits / windows
 vim.keymap.set("n", "]c", "<C-w>c", { desc = "Close current split" })
