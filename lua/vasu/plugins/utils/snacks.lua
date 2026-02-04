@@ -321,7 +321,9 @@ return {
                     icon = "󰿅 ",
                     key = "q",
                     desc = "Quit",
-                    action = ":qa"
+                    action = function()
+                        vim.cmd("silent! qa!")
+                    end
                 }}
             }
         },
@@ -409,9 +411,9 @@ return {
             }
         },
         indent = {
-            enabled = false,
+            enabled = true,
             animate = {
-                enabled = true
+                enabled = true -- ⚡ false for faster, optional
             }
         },
         terminal = {

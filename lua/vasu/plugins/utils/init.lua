@@ -5,7 +5,7 @@ return {
 	require("vasu.plugins.utils.flash"),
 	require("vasu.plugins.utils.markdown"),
 	require("vasu.plugins.utils.notify"),
-	require("vasu.plugins.utils.neotree"),
+	require("vasu.plugins.utils.nvimtree"),
 	require("vasu.plugins.utils.mini"),
 	require("vasu.plugins.utils.git"),
 	require("vasu.plugins.utils.highlight-colors"),

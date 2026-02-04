@@ -44,16 +44,16 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Open Neotree if started with a directory
+-- Open NvimTree if Neovim is started with a directory
 vim.api.nvim_create_autocmd("VimEnter", {
   once = true,
   callback = function()
     local arg = vim.fn.argv(0)
     if arg and vim.fn.isdirectory(arg) == 1 then
       vim.schedule(function()
-        require("neo-tree.command").execute({
-          action = "focus",
-          dir = vim.fn.getcwd(),
+        require("nvim-tree.api").tree.open({
+          focus = true,
+          path = vim.fn.getcwd(),
         })
       end)
     end

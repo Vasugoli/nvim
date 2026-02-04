@@ -14,7 +14,7 @@ return {
 
     -- Set to `true` if your font supports legacy computing symbols (block unicode symbols).
     -- Smears will blend better on all backgrounds.
-    legacy_computing_symbols_support = false,
+    legacy_computing_symbols_support = true,
 
     -- Smear cursor in insert mode.
     -- See also `vertical_bar_cursor_insert_mode` and `distance_stop_animating_vertical_bar`.

@@ -21,6 +21,6 @@ return {
       },
     })
 
-    vim.notify = notify
+    vim.notify = require("notify")
   end,
 }

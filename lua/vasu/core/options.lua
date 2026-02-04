@@ -16,8 +16,8 @@ opt.cursorline = true
 opt.ruler = false
 
 -- tabs & indentation
-opt.tabstop = 2 -- 4 for 4 spaces
-opt.shiftwidth = 2 -- 4 for 4 spaces
+opt.tabstop = 4 -- 2 for 2 spaces
+opt.shiftwidth = 4 -- 2 for 2 spaces
 opt.expandtab = true
 opt.autoindent = true
 opt.smartindent = true
@@ -46,8 +46,11 @@ opt.splitbelow = true
 
 opt.iskeyword:append("-") -- consider string-string as whole word
 
--- shade
-opt.shada = "'100,<50,s10,h"
+-- Make ShaDa safer on Windows
+vim.opt.shada = "" -- disable shada by default
+-- opt.shadafile = vim.fn.stdpath("data") .. "/shada/main.shada"
+-- opt.shada = "!,'100,<50,s10,h"
+
 -- opt.shadafile = "NONE"
 
 -- mouse
