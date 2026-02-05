@@ -413,7 +413,7 @@ return {
         indent = {
             enabled = true,
             animate = {
-                enabled = true -- ⚡ false for faster, optional
+                enabled = false -- ⚡ false for faster, optional
             }
         },
         terminal = {

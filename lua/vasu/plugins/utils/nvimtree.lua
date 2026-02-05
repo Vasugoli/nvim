@@ -95,8 +95,8 @@ return {
         signcolumn = "no",
         number = false,
         relativenumber = false,
-        title = " 󰉋 File Explorer ",
-        title_pos = "center",
+        -- title = " 󰉋 File Explorer ",
+        -- title_pos = "center",
       },
 
       renderer = {

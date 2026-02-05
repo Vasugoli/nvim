@@ -1,7 +1,6 @@
 return {
 	"gelguy/wilder.nvim",
-	-- "nvim-telescope/telescope.nvim",
-  event = "CmdlineEnter",
+  	event = "CmdlineEnter",
 	dependencies = {
 		"nvim-tree/nvim-web-devicons",
 		"romgrk/fzy-lua-native",

@@ -1,7 +1,7 @@
 return {
 	"nvimtools/none-ls.nvim",
-	event = {"InsertEnter", "CmdlineEnter"},
-	-- event = "VeryLazy",	
+	-- event = {"InsertEnter"},
+	event = "BufReadPre",
 	config = function()
 		local null_ls = require("null-ls")
 		null_ls.setup({

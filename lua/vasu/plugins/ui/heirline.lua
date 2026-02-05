@@ -1,6 +1,6 @@
 return {
     "rebelot/heirline.nvim",
-    event = "VeryLazy",
+    event = "UIEnter",
     dependencies = {"nvim-tree/nvim-web-devicons"},
     config = function()
         local conditions = require("heirline.conditions")
