@@ -11,6 +11,9 @@ local opt = vim.opt
 opt.relativenumber = true
 opt.number = true
 
+-- line spacing
+opt.linespace = 5
+
 -- ui
 opt.cursorline = true
 opt.ruler = false
@@ -80,3 +83,15 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 vim.opt.laststatus = 3
+
+-- Ensure filetype detection is enabled
+vim.cmd("filetype plugin indent on")
+
+-- Safety net: re-detect filetype if somehow empty
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+  callback = function()
+    if vim.bo.filetype == "" then
+      vim.cmd("filetype detect")
+    end
+  end,
+})

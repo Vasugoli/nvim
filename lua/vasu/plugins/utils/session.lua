@@ -49,6 +49,7 @@ return {
 
 			-- Telescope only: If load_on_setup is false, make sure you use `:AutoSession search` to open the picker as it will initialize everything first
 			load_on_setup = true,
+			auto_restore_enabled = false,
 		},
 	},
 }

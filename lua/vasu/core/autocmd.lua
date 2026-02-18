@@ -59,3 +59,57 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end
   end,
 })
+
+-- ide like highlight when stopping cursor
+vim.api.nvim_create_autocmd("CursorMoved", {
+  group = vim.api.nvim_create_augroup("LspReferenceHighlight", { clear = true }),
+  desc = "Highlight references under cursor",
+  callback = function()
+    -- Only run if the cursor is not in insert mode
+    local supports_highlight = false
+    if vim.fn.mode() ~= "i" then
+      local clients = vim.lsp.get_clients({ bufnr = 0 })
+      for _, client in ipairs(clients) do
+        if client.server_capabilities.documentHighlightProvider then
+          supports_highlight = true
+          break -- Found a supporting client, no need to check others
+        end
+      end
+      -- Proceed only if an LSP is active AND supports the feature
+      if supports_highlight then
+        vim.lsp.buf.clear_references()
+        vim.lsp.buf.document_highlight()
+      end
+    end
+  end,
+})
+
+-- Enable inlay hints if the LSP server supports it
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+  callback = function(args)
+    local client = vim.lsp.get_client_by_id(args.data.client_id)
+    if client.server_capabilities.inlayHintProvider then
+      vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+    end
+  end
+})
+
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    vim.defer_fn(function()
+      require("auto-session").RestoreSession()
+
+      -- Re-trigger FileType for restored buffers
+      for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_valid(bufnr)
+          and vim.api.nvim_buf_is_loaded(bufnr)
+          and vim.bo[bufnr].buflisted
+          and vim.bo[bufnr].buftype == "" then
+            vim.api.nvim_exec_autocmds("FileType", { buffer = bufnr })
+        end
+      end
+    end, 50) -- small delay is enough
+  end,
+})
+
