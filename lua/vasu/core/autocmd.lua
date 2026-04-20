@@ -98,7 +98,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
 vim.api.nvim_create_autocmd("VimEnter", {
   callback = function()
     vim.defer_fn(function()
-      require("auto-session").RestoreSession()
+      -- auto_session uses underscores, not hyphens
+      local ok, session = pcall(require, "auto_session")
+      if not ok then return end
+
+      session.RestoreSession()
 
       -- Re-trigger FileType for restored buffers
       for _, bufnr in ipairs(vim.api.nvim_list_bufs()) do
@@ -109,7 +113,7 @@ vim.api.nvim_create_autocmd("VimEnter", {
             vim.api.nvim_exec_autocmds("FileType", { buffer = bufnr })
         end
       end
-    end, 50) -- small delay is enough
+    end, 50)
   end,
 })
 
