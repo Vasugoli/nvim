@@ -4,7 +4,7 @@
 *.swn
 *~
 .netrwhist
-
+rtp.txt
 # Undo files
 *.un~
 
