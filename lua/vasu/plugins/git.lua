@@ -1,5 +1,5 @@
 -- vim-fugitive
-vim.keymap.set("n", "<leader>gk", "<cmd>tabnew | Git | only<cr>", { desc = "Fugitive fullscreen tab" })
+vim.keymap.set("n", "<leader>gf", "<cmd>tabnew | Git | only<cr>", { desc = "Fugitive fullscreen tab" })
 
 local myFugitive = vim.api.nvim_create_augroup("myFugitive", {})
 vim.api.nvim_create_autocmd("BufWinEnter", {

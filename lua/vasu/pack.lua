@@ -10,7 +10,7 @@ vim.pack.add({
     { src = "https://github.com/nvim-lua/plenary.nvim" }, --enabled (used by telescope & git_worktree.nvim)
 
     -- Plugins
-    -- { src = "https://github.com/dmtrKovalenko/fff.nvim" }, --enabled
+    { src = "https://github.com/dmtrKovalenko/fff.nvim" }, --enabled
 
     -- all telescope
     { src = "https://github.com/nvim-telescope/telescope.nvim", branch = "master" },--enabled
@@ -19,14 +19,14 @@ vim.pack.add({
     -- statusline
     { src = "https://github.com/rebelot/heirline.nvim" }, --enabled
     -- File explorer
-    { src = "https://github.com/nvim-tree/nvim-tree.lua" }, --enabled
+    { src = "https://github.com/nvim-neo-tree/neo-tree.nvim", branch = "v3.x" }, --enabled
     { src = "https://github.com/mikavilpas/yazi.nvim" }, --enabled
 
     { src = "https://github.com/rmagatti/auto-session" }, -- enabled
 
     -- folding
-    { src = "https://github.com/kevinhwang91/nvim-ufo" }, --enabled
-    { src = "https://github.com/kevinhwang91/promise-async" }, --nvim-ufo dependency
+    -- { src = "https://github.com/kevinhwang91/nvim-ufo" }, --enabled
+    -- { src = "https://github.com/kevinhwang91/promise-async" }, --nvim-ufo dependency
     -- markdown previewer
     { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" }, --enabled
 
@@ -105,6 +105,7 @@ vim.pack.add({
     -- Key display + which-key
     { src = "https://github.com/nvzone/showkeys" },
     { src = "https://github.com/folke/which-key.nvim" },
+    { src = "https://github.com/folke/lazydev.nvim" }, --enabled
 
     -- DAP (debugger) stack
     { src = "https://github.com/mfussenegger/nvim-dap" },
@@ -112,6 +113,8 @@ vim.pack.add({
     { src = "https://github.com/nvim-neotest/nvim-nio" },
     { src = "https://github.com/jay-babu/mason-nvim-dap.nvim" },
     { src = "https://github.com/leoluz/nvim-dap-go" },
+    -- Terminal
+    { src = "https://github.com/akinsho/toggleterm.nvim" },
 })
 
 -- Custom packer commands
@@ -180,7 +183,7 @@ end, { desc = "List non active plugins and select to delete"})
 -- This can be moved to init.lua @ vasu/plugins/
 
 -- Core
--- require("vasu.plugins.lazydev")
+require("vasu.plugins.lazydev")
 
 -- Syntax & Highlighting
 require("vasu.plugins.treesitter")
@@ -197,13 +200,14 @@ require("vasu.plugins.utils.notify")
 require("vasu.plugins.utils.showkeys")
 
 -- File Management
-require("vasu.plugins.nvimtree") --
+require("vasu.plugins.neotree") --
 require("vasu.plugins.yazi")
 require("vasu.plugins.utils.telescope")
+require("vasu.plugins.fff")
 
 -- Editing Helpers
 require("vasu.plugins.formatting")
-require("vasu.plugins.nvim-ufo")
+-- require("vasu.plugins.nvim-ufo")
 require("vasu.plugins.autopairs")
 require("vasu.plugins.comment")
 require("vasu.plugins.colorizer")
@@ -227,3 +231,4 @@ require("vasu.plugins.lsp.debug")
 require("vasu.plugins.trouble")
 require("vasu.plugins.wilder")
 require("vasu.plugins.session")
+require("vasu.plugins.terminal")

@@ -75,36 +75,36 @@ vim.keymap.set("n", "<leader>bl", "<C-w>l<C-w>r", { desc = "Move buffer right" }
 vim.keymap.set("n", "<leader>bj", "<C-w>j<C-w>r", { desc = "Move buffer down" })
 vim.keymap.set("n", "<leader>bk", "<C-w>k<C-w>r", { desc = "Move buffer up" })
 
--- Switch focus between NvimTree and editor
+-- Switch focus between Neo-tree and editor
 vim.keymap.set("n", "<leader>o", function()
 	local current_buf = vim.api.nvim_get_current_buf()
 	local current_ft = vim.api.nvim_get_option_value("filetype", { buf = current_buf })
 
-	if current_ft == "NvimTree" then
-		-- If in NvimTree, move to a normal editor window
+	if current_ft == "neo-tree" then
+		-- If in Neo-tree, move to a normal editor window
 		vim.cmd("wincmd l")
 
-		-- If still in NvimTree, find first non-NvimTree window
+		-- If still in Neo-tree, find first non-Neo-tree window
 		local buf_after = vim.api.nvim_get_current_buf()
 		local ft_after = vim.api.nvim_get_option_value("filetype", { buf = buf_after })
 
-		if ft_after == "NvimTree" then
+		if ft_after == "neo-tree" then
 			for _, win in ipairs(vim.api.nvim_list_wins()) do
 				local buf = vim.api.nvim_win_get_buf(win)
 				local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-				if ft ~= "NvimTree" and ft ~= "toggleterm" then
+				if ft ~= "neo-tree" and ft ~= "toggleterm" then
 					vim.api.nvim_set_current_win(win)
 					break
 				end
 			end
 		end
 	else
-		-- If in editor, focus NvimTree or open it
+		-- If in editor, focus Neo-tree or open it
 		local tree_found = false
 		for _, win in ipairs(vim.api.nvim_list_wins()) do
 			local buf = vim.api.nvim_win_get_buf(win)
 			local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-			if ft == "NvimTree" then
+			if ft == "neo-tree" then
 				vim.api.nvim_set_current_win(win)
 				tree_found = true
 				break
@@ -112,10 +112,10 @@ vim.keymap.set("n", "<leader>o", function()
 		end
 
 		if not tree_found then
-			vim.cmd("NvimTreeToggle")
+			vim.cmd("Neotree toggle")
 		end
 	end
-end, { desc = "Switch focus between NvimTree and editor" })
+end, { desc = "Switch focus between Neo-tree and editor" })
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })

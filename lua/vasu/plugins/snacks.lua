@@ -185,12 +185,6 @@ vim.keymap.set("n", "<leader>gl", function() Snacks.lazygit.log() end,
 vim.keymap.set("n", "<leader>cR", function() Snacks.rename.rename_file() end,
                {desc = "Rename File"})
 
--- Terminal
-vim.keymap.set("n", "<c-/>", function() Snacks.terminal() end,
-               {desc = "Toggle Terminal"})
-vim.keymap.set("n", "<c-_>", function() Snacks.terminal() end,
-               {desc = "which_key_ignore"})
-
 -- Search / Picker
 vim.keymap.set("n", "<leader>ls",
                function() Snacks.picker.lsp_workspace_symbols() end,

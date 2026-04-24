@@ -6,17 +6,9 @@ vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,
 vim.o.sessionoptions = vim.o.sessionoptions:gsub(",folds", ""):gsub("folds,", ""):gsub("^folds$", "")
 
 -- ── Keymaps (immediate — functions are lazy-loaded when called) ──────────────
-vim.keymap.set("n", "<leader>wr", function()
-    require("auto-session").search_session()
-end, { desc = "Session search" })
-
-vim.keymap.set("n", "<leader>ws", function()
-    require("auto-session").SaveSession()
-end, { desc = "Save session" })
-
-vim.keymap.set("n", "<leader>wa", function()
-    require("auto-session").toggle_auto_save()
-end, { desc = "Toggle session autosave" })
+vim.keymap.set("n", "<leader>wr", "<cmd>AutoSession search<CR>", { desc = "Session search" })
+vim.keymap.set("n", "<leader>ws", "<cmd>AutoSession save<CR>", { desc = "Save session" })
+vim.keymap.set("n", "<leader>wa", "<cmd>AutoSession toggle<CR>", { desc = "Toggle session autosave" })
 
 -- ── Setup (deferred so vim.pack runtimepath is fully ready) ─────────────────
 vim.schedule(function()
@@ -27,6 +19,7 @@ vim.schedule(function()
     end
 
     session.setup({
+        auto_restore = false,
         session_lens = {
             picker = "snacks", -- auto-detected; falls back to vim.ui.select
             mappings = {
@@ -40,7 +33,6 @@ vim.schedule(function()
                 layout  = { width = 0.4, height = 0.4 },
             },
             load_on_setup        = true,
-            auto_restore_enabled = false,
         },
     })
 end)
