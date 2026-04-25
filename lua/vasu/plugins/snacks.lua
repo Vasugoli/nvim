@@ -182,15 +182,15 @@ vim.keymap.set("n", "<leader>gl", function() Snacks.lazygit.log() end,
                {desc = "Lazygit Log (cwd)"})
 
 -- File
-vim.keymap.set("n", "<leader>cR", function() Snacks.rename.rename_file() end,
+vim.keymap.set("n", "<leader>cr", function() Snacks.rename.rename_file() end,
                {desc = "Rename File"})
 
 -- Search / Picker
 vim.keymap.set("n", "<leader>ls",
                function() Snacks.picker.lsp_workspace_symbols() end,
                {desc = "LSP Workspace Symbols"})
-vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files() end,
-               {desc = "Search Files"})
+-- vim.keymap.set("n", "<leader>ff", function() Snacks.picker.files() end,
+--                {desc = "Search Files"})
 vim.keymap.set("n", "<leader>fw", function() Snacks.picker.grep_word() end,
                {desc = "Search current Word"})
 vim.keymap.set("n", "<leader>fr", function() Snacks.picker.recent() end,
@@ -203,9 +203,9 @@ vim.keymap.set("n", "<leader>fd", function() Snacks.picker.diagnostics() end,
                {desc = "Search Diagnostics"})
 vim.keymap.set("n", "<leader>ss", function() Snacks.picker.pickers() end,
                {desc = "Search Select Picker"})
-vim.keymap.set("n", "<leader>fc", function()
-    Snacks.picker.files({cwd = vim.fn.stdpath("config")})
-end, {desc = "Search Neovim files"})
+-- vim.keymap.set("n", "<leader>fc", function()
+--     Snacks.picker.files({cwd = vim.fn.stdpath("config")})
+-- end, {desc = "Search Neovim files"})
 vim.keymap.set("n", "<leader>/", function() Snacks.picker.lines() end,
                {desc = "Search in current buffer"})
 vim.keymap.set("n", "<leader>s/", function()
@@ -225,10 +225,6 @@ vim.keymap.set({"n", "t"}, "]]", function() Snacks.words.jump(vim.v.count1) end,
 vim.keymap.set({"n", "t"}, "[[",
                function() Snacks.words.jump(-vim.v.count1) end,
                {desc = "Prev Reference"})
-
--- Notifications
-vim.keymap.set("n", "<leader>un", function() Snacks.notifier.hide() end,
-               {desc = "Dismiss All Notifications"})
 
 -- Neovim news
 vim.keymap.set("n", "<leader>N", function()

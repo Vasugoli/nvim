@@ -24,10 +24,9 @@ require("fff").setup({
     layout = {
         width = 0.75,
         height = 0.85,
-        prompt_position = "bottom",
+        prompt_position = "top",
         preview_position = "right",
         preview_size = 0.5,
-        flex = false,
     },
 
     preview = {
@@ -97,11 +96,11 @@ require("fff").setup({
 })
 
 -- === Keymaps — adjusted for easier navigation (standard <leader>f* style) ===
-vim.keymap.set("n", "<leader>pf", function()
+vim.keymap.set("n", "<leader>ff", function()
     require("fff").find_files()
 end, { desc = "Open file picker" })
 
-vim.keymap.set("n", "<leader>ps", function()
+vim.keymap.set("n", "<leader>lg", function()
     require("fff").live_grep({
         grep = {
             modes = { "fuzzy", "plain" },
@@ -109,10 +108,10 @@ vim.keymap.set("n", "<leader>ps", function()
     })
 end, { desc = "Live fffuzy grep word" })
 
-vim.keymap.set("n", "<leader>pgf", function()
+vim.keymap.set("n", "<leader>fg", function()
     require("fff").find_in_git_root()
 end, { desc = "Find files in git root" })
 
-vim.keymap.set("n", "<leader>pc", function()
+vim.keymap.set("n", "<leader>fc", function()
     require("fff").find_files_in_dir("C:/Users/LENOVO/AppData/Local/nvim")
 end, { desc = "Find files in NVIM Config dir" })

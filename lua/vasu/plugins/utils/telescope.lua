@@ -71,25 +71,15 @@ telescope.setup({
 -- ── Keymaps ──────────────────────────────────────────────────────────────────
 
 -- Live grep in files
-keymap("n", "<leader>fg", builtin.live_grep, { desc = "Live grep in files" })
+keymap("n", "<leader>bg", builtin.live_grep, { desc = "Live grep in files" })
 
 -- Live grep in current buffer's directory
-keymap("n", "<leader>fb", function()
-    builtin.live_grep({
-        prompt_title = "Live Grep in Current Buffer",
-        search_dirs  = { vim.fn.expand("%:p:h") },
-    })
-end, { desc = "Live grep in current directory" })
-
--- Live grep including hidden files
-keymap("n", "<leader>fS", function()
-    builtin.live_grep({
-        prompt_title    = "Live Grep (Include Hidden)",
-        additional_args = function()
-            return { "--hidden", "--no-ignore", "--follow" }
-        end,
-    })
-end, { desc = "Live grep (include hidden files)" })
+-- keymap("n", "<leader>fb", function()
+--     builtin.live_grep({
+--         prompt_title = "Live Grep in Current Buffer",
+--         search_dirs  = { vim.fn.expand("%:p:h") },
+--     })
+-- end, { desc = "Live grep in current directory" })
 
 -- Live grep in Lua files
 keymap("n", "<leader>fL", function()

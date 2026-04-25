@@ -38,9 +38,14 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 --  See `:help vim.hl.on_yank()`
 vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
-  group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
+  group = vim.api.nvim_create_augroup('highlight-yank', { clear = true }),
   callback = function()
-    vim.hl.on_yank()
+    vim.hl.on_yank({
+      higroup = 'Visual', -- Use 'Visual' or 'IncSearch' highlight group
+      timeout = 300,
+    })
+    local message = "Yanked " .. vim.v.event.operator .. " " .. vim.v.event.count .. " time(s)"
+    vim.notify(message, "info")
   end,
 })
 
@@ -114,3 +119,19 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
+-- Notification file save
+vim.api.nvim_create_autocmd("BufWritePost", {
+  callback = function()
+    vim.notify("File saved: " .. vim.fn.expand("%"), "info")
+  end,
+})
+-- Restore cursor position
+vim.api.nvim_create_autocmd("BufReadPost", {
+  callback = function()
+    local mark = vim.api.nvim_buf_get_mark(0, '"')
+    local lcount = vim.api.nvim_buf_line_count(0)
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
