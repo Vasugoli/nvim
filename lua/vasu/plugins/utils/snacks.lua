@@ -5,7 +5,7 @@ require("snacks").setup({
     quickfile = {enabled = true},
     statuscolumn = {enabled = true},
     words = {enabled = true},
-    terminal = {enabled = true},
+    terminal = {enabled = false},
 
     dashboard = {
         -- Explicitly define sections to avoid the built-in 'startup' section

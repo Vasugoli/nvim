@@ -195,7 +195,7 @@ cmp.setup.cmdline(":", {
     }),
 })
 
-cmp.setup({
+local options = {
     experimental = {
         -- HACK: experimenting with ghost text
         -- look at `toggle_ghost_text()` function below.
@@ -235,16 +235,6 @@ cmp.setup({
             },
         },
     }),
-
-    -- mapping = cmp.mapping.preset.insert({
-    --     ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-    --     ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
-    --     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
-    --     ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    --     ["<C-Space>"] = cmp.mapping.complete(), -- show completion suggestions
-    --     ["<C-e>"] = cmp.mapping.abort(), -- close completion window
-    --     ["<CR>"] = cmp.mapping.confirm({ select = false }),
-    -- }),
 
     -- NOTE: ! Experimenting with Customized Mappings ! --
     mapping = cmp.mapping.preset.insert({
@@ -355,7 +345,18 @@ cmp.setup({
             return vim_item
         end,
     },
-})
+}
+
+-- Merge with NvChad UI cmp styling
+local ok, nvchad_cmp = pcall(require, "nvchad.cmp")
+if ok then
+    -- We want to keep our custom format function but use NvChad's window style and fields
+    local our_format = options.formatting.format
+    options = vim.tbl_deep_extend("force", options, nvchad_cmp)
+    options.formatting.format = our_format
+end
+
+cmp.setup(options)
 
 -- NOTE: Added Ghost text stuff
 -- Only show ghost text at word boundaries, not inside keywords. Based on idea

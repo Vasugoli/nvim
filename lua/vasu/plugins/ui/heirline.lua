@@ -1,16 +1,26 @@
 local conditions = require("heirline.conditions")
+local utils = require("heirline.utils")
 local devicons = require("nvim-web-devicons")
 
+local function get_hl(name)
+    local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
+    if not ok then return nil end
+    local fg = hl.fg and string.format("#%06x", hl.fg) or "NONE"
+    local bg = hl.bg and string.format("#%06x", hl.bg) or "NONE"
+    return { fg = fg, bg = bg }
+end
+
 local colors = {
-    bg = "NONE",
-    fg = "#E6EDF3",
-    dim = "#8B949E",
-    blue = "#58A6FF",
-    green = "#3FB950",
-    purple = "#A371F7",
-    red = "#FF7B72",
-    yellow = "#D29922",
-    cyan = "#39C5CF"
+    bg = get_hl("Normal").bg,
+    fg = get_hl("Normal").fg,
+    dim = get_hl("Comment").fg,
+    blue = get_hl("Function").fg,
+    green = get_hl("String").fg,
+    purple = get_hl("Statement").fg,
+    red = get_hl("Error").fg,
+    orange = get_hl("DiagnosticWarn").fg,
+    yellow = get_hl("DiagnosticWarn").fg,
+    cyan = get_hl("Identifier").fg
 }
 
 local Align = {provider = "%="}
@@ -49,12 +59,12 @@ local ViMode = {
             t = ""
         },
         colors = {
-            n = "green",
-            i = "blue",
+            n = "blue",
+            i = "green",
             v = "purple",
             V = "purple",
             ["\22"] = "purple",
-            c = "yellow",
+            c = "orange",
             R = "red",
             t = "cyan"
         }
@@ -214,6 +224,60 @@ local DAP = {
 }
 
 --------------------------------------------------
+-- SEARCH COUNT
+--------------------------------------------------
+local SearchCount = {
+    condition = function()
+        return vim.v.hlsearch ~= 0
+    end,
+    init = function(self)
+        local ok, search = pcall(vim.fn.searchcount)
+        if ok and search.total then
+            self.search = search
+        end
+    end,
+    provider = function(self)
+        local search = self.search
+        if not search or not search.current then return "" end
+        return string.format(" [%d/%d] ", search.current, math.min(search.total, search.maxcount))
+    end,
+    hl = { fg = get_hl("accent").fg, bold = true },
+}
+
+--------------------------------------------------
+-- MACRO RECORDING
+--------------------------------------------------
+local MacroRec = {
+    condition = function()
+        return vim.fn.reg_recording() ~= ""
+    end,
+    provider = " ",
+    hl = { fg = get_hl("accent").fg, bold = true },
+    utils.surround({ "[", "]" }, nil, {
+        provider = function()
+            return vim.fn.reg_recording()
+        end,
+        hl = { fg = get_hl("accent").fg, bold = true },
+    }),
+    update = {
+        "RecordingEnter",
+        "RecordingLeave",
+    }
+}
+
+--------------------------------------------------
+-- SHOW CMD
+--------------------------------------------------
+local ShowCmd = {
+    condition = function()
+        return true
+    end,
+    provider = " :%3.5(%S%) ",
+    hl = { fg = colors.yellow, bold = true },
+}
+
+
+--------------------------------------------------
 -- PROJECT CAPSULE
 --------------------------------------------------
 local ProjectCapsule = {
@@ -265,7 +329,7 @@ local ScrollBar = {
     static = {sbar = {"▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"}},
     provider = function(self)
         local curr = vim.api.nvim_win_get_cursor(0)[1]
-        local total = vim.api.nvim_buf_line_count(0)
+        local total = math.max(vim.api.nvim_buf_line_count(0), 1)
         local i = math.floor((curr - 1) / total * #self.sbar) + 1
         return self.sbar[i]
     end,
@@ -277,8 +341,9 @@ local ScrollBar = {
 --------------------------------------------------
 require("heirline").setup({
     statusline = {
-        ViMode, File, Git, GitDiff, Diagnostics, Align, LSP, Align, DAP,
-        ProjectCapsule, Clock, Ruler, ScrollBar
+        ViMode, File, Git, GitDiff, Diagnostics, SearchCount,
+        Align, LSP, Align,
+        DAP, MacroRec, ProjectCapsule, Clock, Ruler, ScrollBar
     },
     opts = {colors = colors}
 })

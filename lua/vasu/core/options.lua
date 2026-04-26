@@ -5,25 +5,35 @@ vim.g.markdown_recommended_style = 0
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- NvChad base46 cache path
+vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46/"
+
 local opt = vim.opt
 
 -- Enable relative line numbers
 opt.relativenumber = true
 opt.number = true
 
--- line spacing
-opt.linespace = 5
-
+vim.g.editorconfig = false
 -- ui
 opt.cursorline = true
 opt.ruler = false
 
 -- tabs & indentation
-opt.tabstop = 4 -- 2 for 2 spaces
-opt.shiftwidth = 4 -- 2 for 2 spaces
-opt.expandtab = true
-opt.autoindent = true
-opt.smartindent = true
+opt.tabstop = 4         -- Render \t as 4 spaces
+opt.shiftwidth = 4      -- Size of an indent (for > and <)
+opt.softtabstop = 4     -- Makes backspace treat 4 spaces like a tab
+opt.expandtab = false   -- Turn tabs into spaces
+opt.autoindent = true   -- Copy indent from current line when starting a new one
+
+
+
+-- shell
+opt.shell = "nu"
+
+-- cmd height
+opt.cmdheight = 1
+opt.showcmdloc = "statusline"
 
 -- line wrapping
 opt.wrap = false
@@ -43,6 +53,9 @@ opt.signcolumn = "yes"
 -- clipboard
 opt.clipboard:append("unnamedplus")
 
+-- Helpful for searching
+opt.inccommand = "split" -- Shows replacements in a live preview buffer
+
 -- split windows
 opt.splitright = true
 opt.splitbelow = true
@@ -50,9 +63,12 @@ opt.splitbelow = true
 opt.iskeyword:append("-") -- consider string-string as whole word
 
 -- Make ShaDa safer on Windows
-vim.opt.shada = "" -- disable shada by default
--- opt.shadafile = vim.fn.stdpath("data") .. "/shada/main.shada"
--- opt.shada = "!,'100,<50,s10,h"
+local shada_dir = vim.fn.stdpath("data") .. "/shada"
+if vim.fn.isdirectory(shada_dir) == 0 then
+    vim.fn.mkdir(shada_dir, "p")
+end
+opt.shadafile = shada_dir .. "/main.shada"
+opt.shada = "!,'100,<50,s10,h"
 
 -- opt.shadafile = "NONE"
 

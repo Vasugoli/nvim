@@ -7,7 +7,19 @@ local keymap    = vim.keymap.set
 
 telescope.setup({
     defaults = {
-        path_display      = { "smart" },
+        prompt_prefix      = "🔭 ",
+        selection_caret    = "  ",
+        path_display       = { "smart" },
+        sorting_strategy   = "ascending",
+        layout_strategy    = "horizontal",
+        layout_config      = {
+            horizontal = {
+                prompt_position = "top",
+                preview_width   = 0.5,
+            },
+            width  = 0.75,
+            height = 0.85,
+        },
         file_ignore_patterns = {
             "node_modules",
             ".git/",
@@ -37,33 +49,26 @@ telescope.setup({
             glob_pattern = "!{.git,node_modules,dist,build}/*",
         },
         grep_string = {
-            theme          = "ivy",
             word_match     = "-w",
             only_sort_text = true,
         },
         find_files = {
-            theme        = "dropdown",
-            previewer    = false,
+            previewer    = true,
             hidden       = true,
             find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
         },
         buffers = {
-            theme         = "dropdown",
             previewer     = false,
             sort_mru      = true,
             sort_lastused = true,
         },
         help_tags = {
-            theme     = "ivy",
             previewer = true,
         },
         colorscheme = {
-            theme          = "dropdown",
             enable_preview = true,
         },
-        commands = {
-            theme = "ivy",
-        },
+        commands = {},
     },
     extensions = {},
 })
