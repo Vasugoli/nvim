@@ -39,7 +39,6 @@ vim.keymap.set("n", "[w", "<C-w>W", { desc = "Previous window" })
 vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Vertical split" })
 vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Horizontal split" })
 vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize splits" })
-vim.keymap.set("n", "<leader>sc", "<C-w>c", { desc = "Close split" })
 
 -- Create splits
 vim.keymap.set("n", "||", "<cmd>vsplit<CR>", { desc = "Vertical split" })
@@ -60,7 +59,7 @@ vim.keymap.set("n", "]o", "<C-w>o", { desc = "Close other splits (only this one)
 -- Tab navigation
 vim.keymap.set("n", "]t", "<cmd>tabnext<CR>", { silent = true, desc = "Next tab" })
 vim.keymap.set("n", "[t", "<cmd>tabprevious<CR>", { silent = true, desc = "Previous tab" })
-vim.keymap.set("n", "]T", "<cmd>tabnew<CR>", { silent = true, desc = "New tab" })
+vim.keymap.set("n", "]tn", "<cmd>tabnew<CR>", { silent = true, desc = "New tab" })
 vim.keymap.set("n", "]tc", "<cmd>tabclose<CR>", { silent = true, desc = "Close tab" })
 
 -- Buffer navigation
@@ -82,7 +81,7 @@ vim.keymap.set("n", "<leader>o", function()
 
 	if current_ft == "neo-tree" then
 		-- If in Neo-tree, move to a normal editor window
-		vim.cmd("wincmd l")
+		vim.cmd "wincmd l"
 
 		-- If still in Neo-tree, find first non-Neo-tree window
 		local buf_after = vim.api.nvim_get_current_buf()
@@ -111,9 +110,7 @@ vim.keymap.set("n", "<leader>o", function()
 			end
 		end
 
-		if not tree_found then
-			vim.cmd("Neotree toggle")
-		end
+		if not tree_found then vim.cmd "Neotree toggle" end
 	end
 end, { desc = "Switch focus between Neo-tree and editor" })
 

@@ -65,3 +65,30 @@ vim.keymap.set({ "n", "v" }, "<RightMouse>", function()
 	local options = ft == "neo-tree" and "neo-tree" or "default"
 	require("menu").open(options, { mouse = true })
 end, { desc = "Context Menu (Right Click)" })
+
+-- ── NvChad Terminal ──────────────────────────────────────────────────────────
+local term = require "nvchad.term"
+
+-- Float terminal toggle (main one you'll use daily)
+vim.keymap.set(
+	{ "n", "t" },
+	"<leader>tt",
+	function() term.toggle { pos = "float", id = "floatTerm" } end,
+	{ desc = "Toggle float terminal" }
+)
+
+-- Horizontal split terminal toggle
+vim.keymap.set(
+	{ "n", "t" },
+	"<leader>th",
+	function() term.toggle { pos = "sp", id = "hterm" } end,
+	{ desc = "Toggle horizontal terminal" }
+)
+
+-- Vertical split terminal toggle
+vim.keymap.set(
+	{ "n", "t" },
+	"<leader>tv",
+	function() term.toggle { pos = "vsp", id = "vterm" } end,
+	{ desc = "Toggle vertical terminal" }
+)

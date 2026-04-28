@@ -93,15 +93,6 @@ vim.api.nvim_create_autocmd("CursorMoved", {
 	end,
 })
 
--- Enable inlay hints if the LSP server supports it
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-	callback = function(args)
-		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(true, { bufnr = args.buf }) end
-	end,
-})
-
 ---- Notification file save
 vim.api.nvim_create_autocmd("BufWritePost", {
 	callback = function() vim.notify("File saved: " .. vim.fn.expand "%", "info") end,
@@ -112,5 +103,12 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 		local mark = vim.api.nvim_buf_get_mark(0, '"')
 		local lcount = vim.api.nvim_buf_line_count(0)
 		if mark[1] > 0 and mark[1] <= lcount then pcall(vim.api.nvim_win_set_cursor, 0, mark) end
+	end,
+})
+
+-- Safety net: re-detect filetype if somehow empty
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	callback = function()
+		if vim.bo.filetype == "" then vim.cmd "filetype detect" end
 	end,
 })

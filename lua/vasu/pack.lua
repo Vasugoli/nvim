@@ -80,7 +80,6 @@ vim.pack.add {
 	-- AI completions
 	{ src = "https://github.com/github/copilot.vim" },
 	{ src = "https://github.com/olimorris/codecompanion.nvim" },
-	{ src = "https://github.com/stevearc/dressing.nvim" },
 
 	-- Centered scroll
 	{ src = "https://github.com/arnamak/stay-centered.nvim" },
@@ -109,7 +108,7 @@ vim.pack.add {
 	{ src = "https://github.com/nvzone/menu" },
 	{ src = "https://github.com/nvzone/minty" },
 	-- Terminal UI
-	{ src = "https://github.com/nvzone/floaterm" },
+	-- { src = "https://github.com/nvzone/floaterm" },
 }
 
 -- Custom packer commands
@@ -224,4 +223,4 @@ require "vasu.plugins.lsp.debug"
 
 require "vasu.plugins.utils.trouble"
 require "vasu.plugins.utils.session"
-require "vasu.plugins.utils.terminal"
+-- require "vasu.plugins.utils.terminal"
