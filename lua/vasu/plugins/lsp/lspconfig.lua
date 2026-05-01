@@ -1,10 +1,24 @@
--- NOTE: LSP Keybinds
+-- lua/vasu/plugins/lsp/lspconfig.lua
+-- Uses native vim.lsp.config / vim.lsp.enable (Neovim 0.11+ API)
+-- nvim-lspconfig is only used for its bundled server definitions (cmd, root_dir, etc.)
+-- The require("lspconfig") "framework" layer is intentionally NOT used.
+
+local cmp_nvim_lsp = require "cmp_nvim_lsp"
+
+-- ── Capabilities ─────────────────────────────────────────────────────────────
+local capabilities = cmp_nvim_lsp.default_capabilities()
+
+-- Pass capabilities to every server globally
+vim.lsp.config("*", {
+	capabilities = capabilities,
+})
+
+-- ── On Attach ────────────────────────────────────────────────────────────────
 vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+	group = vim.api.nvim_create_augroup("UserLspKeymaps", { clear = true }),
 	callback = function(ev)
-		-- Buffer local mappings
 		local opts = { buffer = ev.buf, silent = true }
-		-- Keymaps
+
 		opts.desc = "Show LSP references"
 		vim.keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
 
@@ -21,7 +35,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
 		opts.desc = "See available code actions"
-		vim.keymap.set({ "n", "v" }, "<leader>vca", function() vim.lsp.buf.code_action() end, opts)
+		vim.keymap.set({ "n", "v" }, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
 
 		opts.desc = "Smart rename"
 		vim.keymap.set("n", "<leader>rn", function()
@@ -29,7 +43,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 			if ok then
 				renamer.open()
 			else
-				vim.lsp.buf.rename() -- fallback
+				vim.lsp.buf.rename()
 			end
 		end, opts)
 
@@ -45,25 +59,26 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		opts.desc = "Restart LSP"
 		vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
 
+		-- Inlay hints — enable if server supports it
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
-		if client.server_capabilities.inlayHintProvider then vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf }) end
+		if client and client.server_capabilities.inlayHintProvider then
+			vim.lsp.inlay_hint.enable(true, { bufnr = ev.buf })
+		end
 	end,
 })
 
--- NOTE: Diagnostic Setup
--- Define sign icons for each severity
-local signs = {
-	[vim.diagnostic.severity.ERROR] = " ",
-	[vim.diagnostic.severity.WARN] = " ",
-	[vim.diagnostic.severity.HINT] = "󰠠 ",
-	[vim.diagnostic.severity.INFO] = " ",
-}
-
--- update diagnostic config function
+-- ── Diagnostics ──────────────────────────────────────────────────────────────
 vim.diagnostic.config {
-	signs = { text = signs },
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "󰅖 ",
+			[vim.diagnostic.severity.WARN] = "󰀪 ",
+			[vim.diagnostic.severity.HINT] = "󰠠 ",
+			[vim.diagnostic.severity.INFO] = "󰋼 ",
+		},
+	},
 	virtual_text = true,
-	underline = true, -- Always on
+	underline = true,
 	update_in_insert = true,
 	float = {
 		focusable = false,
@@ -73,55 +88,57 @@ vim.diagnostic.config {
 	},
 }
 
--- <leader>lx toggle for virtual text (no hover changes)
 vim.keymap.set("n", "<leader>lx", function()
 	local current = vim.diagnostic.config().virtual_text
 	vim.diagnostic.config { virtual_text = not current }
 end, { desc = "Toggle LSP virtual text" })
 
--- NOTE: Setup servers
-local cmp_nvim_lsp = require "cmp_nvim_lsp"
-local capabilities = cmp_nvim_lsp.default_capabilities()
-
--- Native LSP capabilities (if dropping cmp_nvim_lsp)
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
-
--- Global LSP settings (applied to all servers)
-vim.lsp.config("*", {
-	capabilities = capabilities,
+-- ── LSP reference highlight ───────────────────────────────────────────────────
+-- CursorHold fires after updatetime ms of inactivity — not on every cursor move
+vim.api.nvim_create_autocmd("CursorHold", {
+	group = vim.api.nvim_create_augroup("LspReferenceHighlight", { clear = true }),
+	callback = function()
+		local clients = vim.lsp.get_clients { bufnr = 0 }
+		for _, client in ipairs(clients) do
+			if client.server_capabilities.documentHighlightProvider then
+				vim.lsp.buf.document_highlight()
+				return
+			end
+		end
+	end,
 })
 
--- Configure and enable LSP servers
+vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter" }, {
+	group = vim.api.nvim_create_augroup("LspReferenceClear", { clear = true }),
+	callback = function() vim.lsp.buf.clear_references() end,
+})
+
+-- ── Server Configs ────────────────────────────────────────────────────────────
+-- vim.lsp.config() sets config for a server name.
+-- vim.lsp.enable() at the bottom starts them.
+-- mason-lspconfig.setup{ automatic_enable = false } in mason.lua ensures
+-- mason does NOT also start them — only one owner of server startup.
+
 -- lua_ls
 vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
-			diagnostics = {
-				globals = { "vim" },
-			},
-			completion = {
-				callSnippet = "Replace",
-			},
-			-- workspace = {
-			--     library = {
-			--         [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-			--         [vim.fn.stdpath("config") .. "/lua"] = true,
-			--     },
-			-- },
+			diagnostics = { globals = { "vim" } },
+			completion = { callSnippet = "Replace" },
 		},
 	},
 })
 
--- ts_ls (TypeScript/JavaScript)
+-- ts_ls (TypeScript / JavaScript)
 vim.lsp.config("ts_ls", {
 	workspace_required = false,
+	single_file_support = true,
 	filetypes = {
 		"javascript",
 		"javascriptreact",
 		"typescript",
 		"typescriptreact",
 	},
-	single_file_support = true,
 	init_options = {
 		preferences = {
 			includeCompletionsForModuleExports = true,
@@ -146,34 +163,19 @@ vim.lsp.config("ts_ls", {
 	},
 })
 
--- css
+-- cssls
 vim.lsp.config("cssls", {
+	single_file_support = true,
 	filetypes = { "css", "scss", "less" },
 	init_options = { provideFormatter = true },
-	single_file_support = true,
 	settings = {
-		css = {
-			lint = {
-				unknownAtRules = "ignore",
-			},
-			validate = true,
-		},
-		scss = {
-			lint = {
-				unknownAtRules = "ignore",
-			},
-			validate = true,
-		},
-		less = {
-			lint = {
-				unknownAtRules = "ignore",
-			},
-			validate = true,
-		},
+		css = { lint = { unknownAtRules = "ignore" }, validate = true },
+		scss = { lint = { unknownAtRules = "ignore" }, validate = true },
+		less = { lint = { unknownAtRules = "ignore" }, validate = true },
 	},
 })
 
--- tailwind
+-- tailwindcss
 vim.lsp.config("tailwindcss", {
 	filetypes = {
 		"html",
@@ -187,16 +189,14 @@ vim.lsp.config("tailwindcss", {
 		"astro",
 	},
 	init_options = {
-		userLanguages = {
-			astro = "html",
-		},
+		userLanguages = { astro = "html" },
 	},
 })
 
 -- clangd (C / C++)
 vim.lsp.config("clangd", {
-	filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
 	single_file_support = true,
+	filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
 	cmd = {
 		"clangd",
 		"--background-index",
@@ -214,12 +214,12 @@ vim.lsp.config("clangd", {
 
 -- pyright (Python)
 vim.lsp.config("pyright", {
-	filetypes = { "python" },
 	single_file_support = true,
+	filetypes = { "python" },
 	settings = {
 		python = {
 			analysis = {
-				typeCheckingMode = "standard", -- "off" | "basic" | "standard" | "strict"
+				typeCheckingMode = "standard",
 				autoSearchPaths = true,
 				useLibraryCodeForTypes = true,
 				diagnosticMode = "workspace",
@@ -234,15 +234,23 @@ vim.lsp.config("pyright", {
 	},
 })
 
--- Instead of using mason enable all configured LSP via `automatic_enable=true`
--- Prefer more control, enable manual server call below via vim.lsp.enable("")
--- mason config: lua/vasu/plugins/lsp/mason.lua:22
+-- jdtls (Java)
+vim.lsp.config("jdtls", {
+	single_file_support = true,
+	filetypes = { "java" },
+})
+
+-- ── Enable servers ────────────────────────────────────────────────────────────
+-- This is the single place that starts servers.
+-- mason-lspconfig must have automatic_enable = false (see mason.lua).
 vim.lsp.enable {
 	"lua_ls",
-	"cssls",
 	"ts_ls",
+	"html",
+	"cssls",
 	"tailwindcss",
 	"marksman",
 	"clangd",
 	"pyright",
+	"jdtls",
 }

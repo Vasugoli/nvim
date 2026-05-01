@@ -27,7 +27,7 @@ opt.expandtab = false -- Turn tabs into spaces
 opt.autoindent = true -- Copy indent from current line when starting a new one
 
 -- shell
-opt.shell = "nu"
+-- opt.shell = "nu"
 
 -- cmd height
 opt.cmdheight = 1

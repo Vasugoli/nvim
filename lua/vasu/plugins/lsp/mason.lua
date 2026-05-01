@@ -14,7 +14,8 @@ mason.setup {
 }
 
 mason_lspconfig.setup {
-	automatic_enable = true,
+	automatic_enable = false,
+	autoinstall = true,
 	ensure_installed = {
 		"lua_ls",
 		"ts_ls",
@@ -24,6 +25,7 @@ mason_lspconfig.setup {
 		"marksman",
 		"clangd", -- C / C++
 		"pyright", -- Python
+		"jdtls", -- Java
 	},
 }
 
@@ -36,6 +38,7 @@ mason_tool_installer.setup {
 		"black",
 		"clang-format",
 		"denols",
+		"jdtls",
 	},
 }
 

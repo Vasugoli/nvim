@@ -122,3 +122,12 @@ end, { desc = "Switch focus between Neo-tree and editor" })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
+-- Mapping jj to "esc"
+vim.keymap.set("i", "jk", "<Esc>", {
+	desc = "Exit insert mode",
+})
+
+-- Delete the current buffer
+vim.keymap.set("n", "<leader>x", function() vim.cmd "bdelete" end, {
+	desc = "Delete Buffer",
+})

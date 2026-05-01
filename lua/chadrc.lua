@@ -4,7 +4,7 @@
 local M = {}
 
 M.base46 = {
-	theme = "chadracula-evondev", -- default theme
+	theme = "flouromachine", -- default theme
 	transparency = true,
 }
 
