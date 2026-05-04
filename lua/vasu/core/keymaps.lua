@@ -74,45 +74,19 @@ vim.keymap.set("n", "<leader>bl", "<C-w>l<C-w>r", { desc = "Move buffer right" }
 vim.keymap.set("n", "<leader>bj", "<C-w>j<C-w>r", { desc = "Move buffer down" })
 vim.keymap.set("n", "<leader>bk", "<C-w>k<C-w>r", { desc = "Move buffer up" })
 
--- Switch focus between Neo-tree and editor
+-- Switch focus between Snacks Explorer and editor
 vim.keymap.set("n", "<leader>o", function()
-	local current_buf = vim.api.nvim_get_current_buf()
-	local current_ft = vim.api.nvim_get_option_value("filetype", { buf = current_buf })
-
-	if current_ft == "neo-tree" then
-		-- If in Neo-tree, move to a normal editor window
-		vim.cmd "wincmd l"
-
-		-- If still in Neo-tree, find first non-Neo-tree window
-		local buf_after = vim.api.nvim_get_current_buf()
-		local ft_after = vim.api.nvim_get_option_value("filetype", { buf = buf_after })
-
-		if ft_after == "neo-tree" then
-			for _, win in ipairs(vim.api.nvim_list_wins()) do
-				local buf = vim.api.nvim_win_get_buf(win)
-				local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-				if ft ~= "neo-tree" and ft ~= "toggleterm" then
-					vim.api.nvim_set_current_win(win)
-					break
-				end
-			end
+	local explorer = Snacks.picker.get({ source = "explorer" })[1]
+	if explorer and explorer.win and vim.api.nvim_win_is_valid(explorer.win.win) then
+		if vim.api.nvim_get_current_win() == explorer.win.win then
+			vim.cmd "wincmd p"
+		else
+			vim.api.nvim_set_current_win(explorer.win.win)
 		end
 	else
-		-- If in editor, focus Neo-tree or open it
-		local tree_found = false
-		for _, win in ipairs(vim.api.nvim_list_wins()) do
-			local buf = vim.api.nvim_win_get_buf(win)
-			local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-			if ft == "neo-tree" then
-				vim.api.nvim_set_current_win(win)
-				tree_found = true
-				break
-			end
-		end
-
-		if not tree_found then vim.cmd "Neotree toggle" end
+		Snacks.explorer()
 	end
-end, { desc = "Switch focus between Neo-tree and editor" })
+end, { desc = "Focus Snacks Explorer" })
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })

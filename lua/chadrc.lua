@@ -28,9 +28,9 @@ M.ui = {
 	},
 
 	tabufline = {
-		enabled = true,
+		enabled = false,
 		lazyload = true,
-		treeOffsetFt = "neo-tree",
+		treeOffsetFt = "snacks_picker_list",
 		order = {
 			"treeOffset",
 			"buffers",
@@ -52,8 +52,8 @@ M.ui = {
 			relative = "editor",
 			row = 0.3,
 			col = 0.25,
-			width = 0.5,
-			height = 0.4,
+			width = 1,
+			height = 1,
 			border = "single",
 		},
 	},
@@ -64,7 +64,6 @@ M.ui = {
 	colorify = {
 		enabled = true,
 		mode = "virtual", -- fg, bg, virtual
-		virt_text = "󱓻 ",
 		highlight = {
 			hex = true,
 			lspvars = true,

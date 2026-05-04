@@ -19,7 +19,6 @@ vim.pack.add {
 	-- statusline
 	{ src = "https://github.com/rebelot/heirline.nvim" }, --enabled
 	-- File explorer
-	{ src = "https://github.com/nvim-neo-tree/neo-tree.nvim", branch = "v3.x" }, --enabled
 	{ src = "https://github.com/mikavilpas/yazi.nvim" }, --enabled
 
 	{ src = "https://github.com/rmagatti/auto-session" }, -- enabled
@@ -36,11 +35,11 @@ vim.pack.add {
 	{ src = "https://github.com/echasnovski/mini.nvim" }, --enabled
 
 	{ src = "https://github.com/folke/todo-comments.nvim" }, --enabled
-	{ src = "https://github.com/numToStr/Comment.nvim" }, --enabled
+	-- { src = "https://github.com/numToStr/Comment.nvim" }, --enabled
 	{ src = "https://github.com/JoosepAlviste/nvim-ts-context-commentstring" }, -- enabled
 
 	-- git
-	{ src = "https://github.com/f-person/git-blame.nvim" }, --enabled
+	-- { src = "https://github.com/f-person/git-blame.nvim" }, --enabled
 	{ src = "https://github.com/lewis6991/gitsigns.nvim" }, --enabled
 
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" }, --enabled
@@ -109,6 +108,11 @@ vim.pack.add {
 	{ src = "https://github.com/nvzone/minty" },
 	-- Terminal UI
 	-- { src = "https://github.com/nvzone/floaterm" },
+
+	-- Database
+	{ src = "https://github.com/tpope/vim-dadbod" },
+	{ src = "https://github.com/kristijanhusak/vim-dadbod-ui" },
+	{ src = "https://github.com/kristijanhusak/vim-dadbod-completion" },
 }
 
 -- Custom packer commands
@@ -194,7 +198,6 @@ require "vasu.plugins.utils.notify"
 require "vasu.plugins.utils.showkeys"
 
 -- File Management
-require "vasu.plugins.ui.neotree"
 require "vasu.plugins.utils.yazi"
 require "vasu.plugins.utils.telescope"
 require "vasu.plugins.utils.fff"
@@ -223,4 +226,5 @@ require "vasu.plugins.lsp.debug"
 
 require "vasu.plugins.utils.trouble"
 require "vasu.plugins.utils.session"
+require "vasu.plugins.utils.db"
 -- require "vasu.plugins.utils.terminal"

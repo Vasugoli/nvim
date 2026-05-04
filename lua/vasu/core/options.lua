@@ -9,55 +9,49 @@ vim.g.maplocalleader = " "
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 
 local opt = vim.opt
+local o = vim.o
+local g = vim.g
 
--- Enable relative line numbers
-opt.relativenumber = true
-opt.number = true
+-------------------------------------- options ------------------------------------------
+o.laststatus = 3
+o.showmode = false
+o.splitkeep = "screen"
 
-vim.g.editorconfig = false
--- ui
-opt.cursorline = true
-opt.ruler = false
+o.clipboard = "unnamedplus"
+o.cursorline = true
+o.cursorlineopt = "number"
 
--- tabs & indentation
-opt.tabstop = 4 -- Render \t as 4 spaces
-opt.shiftwidth = 4 -- Size of an indent (for > and <)
-opt.softtabstop = 4 -- Makes backspace treat 4 spaces like a tab
-opt.expandtab = false -- Turn tabs into spaces
-opt.autoindent = true -- Copy indent from current line when starting a new one
+-- Indenting
+o.expandtab = true
+o.shiftwidth = 4
+o.smartindent = true
+o.tabstop = 4
+o.softtabstop = 4
 
--- shell
--- opt.shell = "nu"
+opt.fillchars = { eob = " " }
+o.ignorecase = true
+o.smartcase = true
+o.mouse = "a"
 
--- cmd height
-opt.cmdheight = 1
-opt.showcmdloc = "statusline"
+-- Numbers
+o.relativenumber = true
+o.number = true
+o.numberwidth = 2
+o.ruler = false
 
--- line wrapping
-opt.wrap = false
+-- disable nvim intro
+opt.shortmess:append "sI"
 
--- search settings
-opt.ignorecase = true
-opt.smartcase = true
+o.signcolumn = "yes"
+o.splitbelow = true
+o.splitright = true
+o.timeoutlen = 400
+o.undofile = true
 
--- appearance
 opt.termguicolors = true
-opt.background = "dark"
 opt.signcolumn = "yes"
-
--- backspace
--- opt.backspace = "indent, eol, start"
-
--- clipboard
-opt.clipboard:append "unnamedplus"
-
 -- Helpful for searching
 opt.inccommand = "split" -- Shows replacements in a live preview buffer
-
--- split windows
-opt.splitright = true
-opt.splitbelow = true
-
 opt.iskeyword:append "-" -- consider string-string as whole word
 
 -- Make ShaDa safer on Windows
@@ -66,32 +60,30 @@ if vim.fn.isdirectory(shada_dir) == 0 then vim.fn.mkdir(shada_dir, "p") end
 opt.shadafile = shada_dir .. "/main.shada"
 opt.shada = "!,'100,<50,s10,h"
 
--- opt.shadafile = "NONE"
-
--- mouse
-opt.mouse = "a" -- Enable mouse mode
-
 opt.virtualedit = "block" -- Allow cursor to move where there is no text in visual block mode
+-- interval for writing swap file to disk, also used by gitsigns
+o.updatetime = 250
 
--- disable show mode you are in
-opt.showmode = false
-
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
---
---  Notice listchars is set using `vim.opt` instead of `vim.o`.
---  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
---   See `:help lua-options`
---   and `:help lua-options-guide`
-vim.o.list = true
+o.list = true
 opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 -- remove ~ from end of buffer
 opt.fillchars = { eob = " " }
+-- go to previous/next line with h,l,left arrow and right arrow
+-- when cursor reaches end/beginning of line
+-- opt.whichwrap:append "<>[]hl"
 
--- Disable in built file exploler and nvim netrw
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
+-- disable some default providers
+g.loaded_node_provider = 0
+g.loaded_python3_provider = 0
+g.loaded_perl_provider = 0
+g.loaded_ruby_provider = 0
+g.loaded_netrw = 1
+g.loaded_netrwPlugin = 1
 
-vim.opt.laststatus = 3
+-- add binaries installed by mason.nvim to path
+local is_windows = vim.fn.has "win32" ~= 0
+local sep = is_windows and "\\" or "/"
+local delim = is_windows and ";" or ":"
+vim.env.PATH = table.concat({ vim.fn.stdpath "data", "mason", "bin" }, sep) .. delim .. vim.env.PATH
+

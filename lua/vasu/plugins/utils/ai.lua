@@ -1,6 +1,7 @@
 -- github/copilot.vim — AI completions
 vim.g.copilot_filetypes = {
 	cpp = false, -- disable for C++
+	java = false, -- disable for Java
 	c = false, -- disable for C
 }
 vim.keymap.set("i", "<C-s>", 'copilot#Accept("\\<CR>")', {
@@ -26,7 +27,7 @@ require("codecompanion").setup {
 }
 
 -- Keymaps for CodeCompanion
-vim.keymap.set({ "n", "v" }, "<C-a>", "<cmd>CodeCompanionActions<cr>", { desc = "AI Actions" })
+vim.keymap.set({ "n", "v" }, "<C-i>", "<cmd>CodeCompanionActions<cr>", { desc = "AI Actions" })
 vim.keymap.set({ "n", "v" }, "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "AI Chat" })
 vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { desc = "AI Add to Chat" })
 

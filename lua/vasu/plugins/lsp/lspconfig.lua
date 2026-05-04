@@ -39,12 +39,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 		opts.desc = "Smart rename"
 		vim.keymap.set("n", "<leader>rn", function()
-			local ok, renamer = pcall(require, "nvchad.lsp.rename")
-			if ok then
-				renamer.open()
-			else
-				vim.lsp.buf.rename()
-			end
+			-- local ok, renamer = pcall(require, "nvchad.lsp.rename")
+			-- if ok then
+			-- 	renamer()
+			-- else
+			-- 	vim.lsp.buf.rename()
+			-- end
+			require "nvchad.lsp.renamer"()
 		end, opts)
 
 		opts.desc = "Show buffer diagnostics"
@@ -57,7 +58,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
 		opts.desc = "Restart LSP"
-		vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts)
+		vim.keymap.set("n", "<leader>rs", ":lsp restart<CR>", opts)
 
 		-- Inlay hints — enable if server supports it
 		local client = vim.lsp.get_client_by_id(ev.data.client_id)
@@ -238,6 +239,18 @@ vim.lsp.config("pyright", {
 vim.lsp.config("jdtls", {
 	single_file_support = true,
 	filetypes = { "java" },
+	settings = {
+		java = {
+			inlayHints = {
+				parameterNames = {
+					enabled = "all",
+				},
+				variableTypes = {
+					enabled = true,
+				},
+			},
+		},
+	},
 })
 
 -- ── Enable servers ────────────────────────────────────────────────────────────

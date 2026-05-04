@@ -6,6 +6,13 @@ require("snacks").setup {
 	statuscolumn = { enabled = true },
 	words = { enabled = true },
 	terminal = { enabled = false },
+	explorer = { enabled = true },
+	winbar = {
+		enabled = true,
+		show_file = true,
+		show_modified = true,
+		show_cursor = false,
+	},
 
 	dashboard = {
 		-- Explicitly define sections to avoid the built-in 'startup' section
@@ -13,8 +20,6 @@ require("snacks").setup {
 		sections = {
 			{ section = "header" },
 			{ section = "keys", gap = 1, padding = 1 },
-			{ section = "recent_files", limit = 8, padding = 1 },
-			{ section = "projects", limit = 8, padding = 1 },
 		},
 		preset = {
 			header = table.concat({
@@ -27,6 +32,8 @@ require("snacks").setup {
 				[[    █████████ ██████████ █████████ █████ █████ ████ █████   ]],
 				[[  ███████████ ███    ███ █████████ █████ █████ ████ █████  ]],
 				[[ ██████  █████████████████████ ████ █████ █████ ████ ██████ ]],
+				[[                                                                       ]],
+				[[                      ⚡FEEL THE TRUE POWER OF NEOVIM...!               ]],
 				[[                                                                       ]],
 			}, "\n"),
 			keys = {
@@ -66,12 +73,7 @@ require("snacks").setup {
 					desc = "Session Search",
 					action = ":AutoSession search",
 				},
-				{
-					icon = "󰒓 ",
-					key = "m",
-					desc = "Mason",
-					action = ":Mason",
-				},
+				{ icon = "󰒓 ", key = "m", desc = "Mason", action = ":Mason" },
 				{
 					icon = "󰿅 ",
 					key = "q",
@@ -147,12 +149,12 @@ vim.api.nvim_create_autocmd("UIEnter", {
 		-- UI
 		Snacks.toggle.indent():map "<leader>ug"
 		Snacks.toggle.dim():map "<leader>ue"
-		Snacks.toggle.zoom():map "<leader>uz" -- ← NEW: maximize split
-		Snacks.toggle.zen():map "<leader>uZ" -- ← NEW: zen mode
+		Snacks.toggle.zoom():map "<leader>uZ" -- ← NEW: maximize split
+		Snacks.toggle.zen():map "<leader>uz" -- ← NEW: zen mode
 
 		-- LSP / code
 		Snacks.toggle.diagnostics():map "<leader>ud"
-		Snacks.toggle.inlay_hints():map "<leader>uh"
+		-- Snacks.toggle.inlay_hints():map "<leader>uh"
 		Snacks.toggle.treesitter():map "<leader>ut"
 
 		-- AI
@@ -166,7 +168,7 @@ vim.api.nvim_create_autocmd("UIEnter", {
 -- ── Keymaps ──────────────────────────────────────────────────────────────────
 
 -- Buffer management
-vim.keymap.set("n", "<leader>x", function() Snacks.bufdelete() end, { desc = "Delete Buffer" })
+vim.keymap.set("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer " })
 vim.keymap.set("n", "<leader><leader>", function() Snacks.picker.buffers() end, { desc = "Find existing buffers" })
 
 -- Git

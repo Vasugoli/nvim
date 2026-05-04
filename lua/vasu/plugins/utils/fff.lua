@@ -18,7 +18,7 @@ require("fff").setup {
 	layout = {
 		width = 0.75,
 		height = 0.85,
-		prompt_position = "bottom",
+		prompt_position = "top",
 		preview_position = "right",
 		preview_size = 0.5,
 		show_scrollbar = true,
@@ -32,7 +32,7 @@ require("fff").setup {
 		binary_file_threshold = 1024,
 		line_numbers = false,
 		wrap_lines = false,
-		show_file_info = true,
+		-- show_file_info = false,
 		history = {
 			enabled = true,
 			db_path = vim.fn.stdpath "data" .. "/fff_queries",
