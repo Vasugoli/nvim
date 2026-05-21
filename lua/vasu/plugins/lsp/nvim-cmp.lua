@@ -187,6 +187,25 @@ cmp.setup.cmdline(":", {
 	},
 })
 
+local cmp_sources = {
+	{ name = "lazydev", group_index = 0 },
+	{ name = "nvim_lsp" },
+	{ name = "buffer" }, -- text within current buffer
+	{ name = "path" }, -- file system paths
+	{
+		name = "spell", -- for markdown spellchecks completions
+		option = {
+			enable_in_context = function()
+				local ft = vim.bo.filetype
+				return ft == "markdown" or ft == "text"
+			end,
+		},
+	},
+}
+if has_luasnip then
+	table.insert(cmp_sources, 1, { name = "luasnip" })
+end
+
 local options = {
 	experimental = {
 		-- HACK: experimenting with ghost text
@@ -205,26 +224,11 @@ local options = {
 		},
 	},
 	-- config nvim cmp to work with snippet engine
-	snippet = {
+	snippet = has_luasnip and {
 		expand = function(args) luasnip.lsp_expand(args.body) end,
-	},
+	} or nil,
 	-- autocompletion sources
-	sources = cmp.config.sources {
-		{ name = "luasnip" }, -- snippets
-		{ name = "lazydev", group_index = 0 },
-		{ name = "nvim_lsp" },
-		{ name = "buffer" }, -- text within current buffer
-		{ name = "path" }, -- file system paths
-		{
-			name = "spell", -- for markdown spellchecks completions
-			option = {
-				enable_in_context = function()
-					local ft = vim.bo.filetype
-					return ft == "markdown" or ft == "text"
-				end,
-			},
-		},
-	},
+	sources = cmp.config.sources(cmp_sources),
 
 	-- NOTE: ! Experimenting with Customized Mappings ! --
 	mapping = cmp.mapping.preset.insert {

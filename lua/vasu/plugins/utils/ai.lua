@@ -27,7 +27,7 @@ require("codecompanion").setup {
 }
 
 -- Keymaps for CodeCompanion
-vim.keymap.set({ "n", "v" }, "<C-i>", "<cmd>CodeCompanionActions<cr>", { desc = "AI Actions" })
+vim.keymap.set({ "n", "v" }, "<C-t>", "<cmd>CodeCompanionActions<cr>", { desc = "AI Actions" })
 vim.keymap.set({ "n", "v" }, "<leader>a", "<cmd>CodeCompanionChat Toggle<cr>", { desc = "AI Chat" })
 vim.keymap.set("v", "ga", "<cmd>CodeCompanionChat Add<cr>", { desc = "AI Add to Chat" })
 

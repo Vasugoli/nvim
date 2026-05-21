@@ -76,17 +76,22 @@ vim.keymap.set("n", "<leader>bk", "<C-w>k<C-w>r", { desc = "Move buffer up" })
 
 -- Switch focus between Snacks Explorer and editor
 vim.keymap.set("n", "<leader>o", function()
+	-- Get the active explorer instance safely
 	local explorer = Snacks.picker.get({ source = "explorer" })[1]
+
 	if explorer and explorer.win and vim.api.nvim_win_is_valid(explorer.win.win) then
 		if vim.api.nvim_get_current_win() == explorer.win.win then
+			-- If inside the explorer, jump back to the last window
 			vim.cmd "wincmd p"
 		else
+			-- If outside, bring focus into the explorer window
 			vim.api.nvim_set_current_win(explorer.win.win)
 		end
 	else
+		-- If it doesn't exist or was closed, open a new one
 		Snacks.explorer()
 	end
-end, { desc = "Focus Snacks Explorer" })
+end, { desc = "Toggle/Focus Snacks Explorer" })
 
 -- NOTE: Some terminals have colliding keymaps or are not able to send distinct keycodes
 -- vim.keymap.set("n", "<C-S-h>", "<C-w>H", { desc = "Move window to the left" })
@@ -104,4 +109,8 @@ vim.keymap.set("i", "jk", "<Esc>", {
 -- Delete the current buffer
 vim.keymap.set("n", "<leader>x", function() vim.cmd "bdelete" end, {
 	desc = "Delete Buffer",
+})
+
+vim.keymap.set("n", "<leader>re", "<cmd>restart<CR>", {
+	desc = "Restart Neovim",
 })

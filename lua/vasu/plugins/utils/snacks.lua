@@ -15,6 +15,7 @@ require("snacks").setup {
 	},
 
 	dashboard = {
+		enabled = false,
 		-- Explicitly define sections to avoid the built-in 'startup' section
 		-- which calls require('lazy.stats') — a lazy.nvim internal not available here.
 		sections = {

@@ -40,7 +40,8 @@ o.numberwidth = 2
 o.ruler = false
 
 -- disable nvim intro
-opt.shortmess:append "sI"
+opt.shortmess:append "c"
+opt.completeopt = "menu,menuone,noselect"
 
 o.signcolumn = "yes"
 o.splitbelow = true
@@ -78,12 +79,11 @@ g.loaded_node_provider = 0
 g.loaded_python3_provider = 0
 g.loaded_perl_provider = 0
 g.loaded_ruby_provider = 0
-g.loaded_netrw = 1
-g.loaded_netrwPlugin = 1
-
+g.loaded_netrw = 0
+g.loaded_netrwPlugin = 0
+g.loaded_netrw_banner = 0
 -- add binaries installed by mason.nvim to path
 local is_windows = vim.fn.has "win32" ~= 0
 local sep = is_windows and "\\" or "/"
 local delim = is_windows and ";" or ":"
 vim.env.PATH = table.concat({ vim.fn.stdpath "data", "mason", "bin" }, sep) .. delim .. vim.env.PATH
-

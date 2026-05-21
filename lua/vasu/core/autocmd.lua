@@ -51,19 +51,16 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
--- Open Neo-tree if Neovim is started with a directory
+-- Open Snacks Explorer if Neovim is started with a directory
 vim.api.nvim_create_autocmd("VimEnter", {
 	once = true,
 	callback = function()
 		local arg = vim.fn.argv(0)
 		if arg and vim.fn.isdirectory(arg) == 1 then
 			vim.schedule(function()
-				local ok, nt_cmd = pcall(require, "neo-tree.command")
-				if ok then
-					nt_cmd.execute { action = "toggle", focus = true }
-				else
-					vim.cmd "Neotree toggle"
-				end
+				vim.cmd("cd " .. vim.fn.fnameescape(arg))
+				local ok, Snacks = pcall(require, "snacks")
+				if ok then Snacks.explorer() end
 			end)
 		end
 	end,
