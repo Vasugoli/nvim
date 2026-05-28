@@ -140,8 +140,8 @@ local miniComment = require "mini.comment"
 miniComment.setup()
 
 -- Bracketed some useful keymaps. See `:h MiniBracketed` for more details.
--- local miniBracketed = require "mini.bracketed"
--- miniBracketed.setup()
+local miniBracketed = require "mini.bracketed"
+miniBracketed.setup()
 
 -- Align text by pattern. See `:h MiniAlign` for more details.
 -- local miniAlign = require "mini.align"

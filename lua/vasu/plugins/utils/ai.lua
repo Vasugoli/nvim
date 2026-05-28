@@ -4,7 +4,7 @@ vim.g.copilot_filetypes = {
 	java = false, -- disable for Java
 	c = false, -- disable for C
 }
-vim.keymap.set("i", "<C-s>", 'copilot#Accept("\\<CR>")', {
+vim.keymap.set("i", "<C-k>", 'copilot#Accept("\\<CR>")', {
 	expr = true,
 	replace_keycodes = false,
 })

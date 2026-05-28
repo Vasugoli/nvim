@@ -32,8 +32,8 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 -- Window focus
-vim.keymap.set("n", "]w", "<C-w>w", { desc = "Next window" })
-vim.keymap.set("n", "[w", "<C-w>W", { desc = "Previous window" })
+-- vim.keymap.set("n", "]w", "<C-w>w", { desc = "Next window" })
+-- vim.keymap.set("n", "[w", "<C-w>W", { desc = "Previous window" })
 
 -- Split management
 vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Vertical split" })
@@ -41,9 +41,9 @@ vim.keymap.set("n", "<leader>sh", "<C-w>s", { desc = "Horizontal split" })
 vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Equalize splits" })
 
 -- Create splits
-vim.keymap.set("n", "||", "<cmd>vsplit<CR>", { desc = "Vertical split" })
-vim.keymap.set("n", "//", "<cmd>split<CR>", { desc = "Horizontal split" })
--- vim.keymap.set("n", "]s", "<cmd>vsplit<CR>", { desc = "Vertical split" })
+-- vim.keymap.set("n", "||", "<cmd>vsplit<CR>", { desc = "Vertical split" })
+-- vim.keymap.set("n", "//", "<cmd>split<CR>", { desc = "Horizontal split" })
+-- -- vim.keymap.set("n", "]s", "<cmd>vsplit<CR>", { desc = "Vertical split" })
 -- vim.keymap.set("n", "[s", "<cmd>split<CR>", { desc = "Horizontal split" })
 
 -- Resize splits
@@ -53,20 +53,20 @@ vim.keymap.set("n", "<C-Left>", "<cmd>vertical resize +2<CR>", { silent = true, 
 vim.keymap.set("n", "<C-Right>", "<cmd>vertical resize -2<CR>", { silent = true, desc = "Increase width" })
 
 -- Close splits / windows
-vim.keymap.set("n", "]c", "<C-w>c", { desc = "Close current split" })
-vim.keymap.set("n", "]o", "<C-w>o", { desc = "Close other splits (only this one)" })
-
+-- vim.keymap.set("n", "]c", "<C-w>c", { desc = "Close current split" })
+-- vim.keymap.set("n", "]o", "<C-w>o", { desc = "Close other splits (only this one)" })
+--
 -- Tab navigation
-vim.keymap.set("n", "]t", "<cmd>tabnext<CR>", { silent = true, desc = "Next tab" })
-vim.keymap.set("n", "[t", "<cmd>tabprevious<CR>", { silent = true, desc = "Previous tab" })
-vim.keymap.set("n", "]tn", "<cmd>tabnew<CR>", { silent = true, desc = "New tab" })
-vim.keymap.set("n", "]tc", "<cmd>tabclose<CR>", { silent = true, desc = "Close tab" })
+-- vim.keymap.set("n", "]t", "<cmd>tabnext<CR>", { silent = true, desc = "Next tab" })
+-- vim.keymap.set("n", "[t", "<cmd>tabprevious<CR>", { silent = true, desc = "Previous tab" })
+-- vim.keymap.set("n", "]tn", "<cmd>tabnew<CR>", { silent = true, desc = "New tab" })
+-- vim.keymap.set("n", "]tc", "<cmd>tabclose<CR>", { silent = true, desc = "Close tab" })
 
 -- Buffer navigation
-vim.keymap.set("n", "]b", "<cmd>bnext<CR>", { silent = true, desc = "Next buffer" })
-vim.keymap.set("n", "[b", "<cmd>bprevious<CR>", { silent = true, desc = "Previous buffer" })
-vim.keymap.set("n", "]B", "<cmd>blast<CR>", { silent = true, desc = "Last buffer" })
-vim.keymap.set("n", "[B", "<cmd>bfirst<CR>", { silent = true, desc = "First buffer" })
+-- vim.keymap.set("n", "]b", "<cmd>bnext<CR>", { silent = true, desc = "Next buffer" })
+-- vim.keymap.set("n", "[b", "<cmd>bprevious<CR>", { silent = true, desc = "Previous buffer" })
+-- vim.keymap.set("n", "]B", "<cmd>blast<CR>", { silent = true, desc = "Last buffer" })
+-- vim.keymap.set("n", "[B", "<cmd>bfirst<CR>", { silent = true, desc = "First buffer" })
 
 -- Move buffer between windows
 vim.keymap.set("n", "<leader>bh", "<C-w>h<C-w>r", { desc = "Move buffer left" })
@@ -110,7 +110,12 @@ vim.keymap.set("i", "jk", "<Esc>", {
 vim.keymap.set("n", "<leader>x", function() vim.cmd "bdelete" end, {
 	desc = "Delete Buffer",
 })
-
+-- Restart Neovim
 vim.keymap.set("n", "<leader>re", "<cmd>restart<CR>", {
 	desc = "Restart Neovim",
+})
+-- undotree
+vim.cmd "packadd nvim.undotree"
+vim.keymap.set("n", "<leader>u", require("undotree").open, {
+	desc = "Open Undotree",
 })

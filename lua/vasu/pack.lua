@@ -108,11 +108,6 @@ vim.pack.add {
 	{ src = "https://github.com/nvzone/minty" },
 	-- Terminal UI
 	-- { src = "https://github.com/nvzone/floaterm" },
-
-	-- Database
-	{ src = "https://github.com/tpope/vim-dadbod" },
-	{ src = "https://github.com/kristijanhusak/vim-dadbod-ui" },
-	{ src = "https://github.com/kristijanhusak/vim-dadbod-completion" },
 }
 
 -- Custom packer commands
@@ -226,5 +221,4 @@ require "vasu.plugins.lsp.debug"
 
 require "vasu.plugins.utils.trouble"
 require "vasu.plugins.utils.session"
-require "vasu.plugins.utils.db"
 -- require "vasu.plugins.utils.terminal"
