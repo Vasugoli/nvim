@@ -40,7 +40,7 @@ o.numberwidth = 2
 o.ruler = false
 
 -- disable nvim intro
-opt.shortmess:append "c"
+-- opt.shortmess:append "c"
 opt.completeopt = "menu,menuone,noselect"
 
 o.signcolumn = "yes"
