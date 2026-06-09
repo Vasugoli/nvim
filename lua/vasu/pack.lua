@@ -45,7 +45,9 @@ vim.pack.add {
 	{ src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" }, --enabled
 	{ src = "https://github.com/windwp/nvim-ts-autotag" }, --enabled
 
-	-- completions cmp
+	-- blink.cmp completion UI
+	{ src = "https://github.com/saghen/blink.cmp", version = "v1.*" },
+	-- completion engine dependency
 	{ src = "https://github.com/hrsh7th/nvim-cmp" }, --enabled
 	-- completions dependency
 	{ src = "https://github.com/hrsh7th/cmp-nvim-lsp" },

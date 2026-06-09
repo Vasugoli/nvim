@@ -25,5 +25,13 @@ vim.api.nvim_create_autocmd("PackChanged", {
             if not event.data.active then vim.cmd.packadd('fff.nvim') end
             require('fff.download').download_or_build_binary()
         end
+
+        -- blink.cmp
+        if name == 'blink.cmp' and (kind == 'install' or kind == 'update') then
+            if not event.data.active then vim.cmd.packadd('blink.cmp') end
+            pcall(function()
+                require('blink.cmp.fuzzy.build').build()
+            end)
+        end
     end
 })

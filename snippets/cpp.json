@@ -1,0 +1,40 @@
+{
+  "main": {
+    "prefix": "main",
+    "body": [
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    ${1:// code}",
+      "    return 0;",
+      "}"
+    ],
+    "description": "C++ main template"
+  },
+  "fori": {
+    "prefix": "fori",
+    "body": [
+      "for (int ${1:i} = 0; ${1} < ${2:n}; ++${1}) {",
+      "    ${0}",
+      "}"
+    ],
+    "description": "C-style for loop"
+  },
+  "ios_main": {
+    "prefix": "mainios",
+    "body": [
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "#define IOS ios::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);",
+      "",
+      "auto main() -> int {",
+      "    IOS;",
+      "",
+      "    return 0;",
+      "}"
+    ],
+    "description": "C++ main with IOS macro"
+  }
+}

@@ -13,6 +13,11 @@
       "rev": "884b990dcdbe07520a0892da6ba3e8d202b46337",
       "src": "https://github.com/nvchad/base46"
     },
+    "blink.cmp": {
+      "rev": "b02ac65634bdb8af2dcc4eb6c807c060e1e15ae6",
+      "src": "https://github.com/saghen/blink.cmp",
+      "version": "'v1.*'"
+    },
     "cmp-buffer": {
       "rev": "b74fab3656eea9de20a9b8116afa3cfc4ec09657",
       "src": "https://github.com/hrsh7th/cmp-buffer"

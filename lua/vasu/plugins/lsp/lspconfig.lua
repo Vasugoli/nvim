@@ -3,10 +3,13 @@
 -- nvim-lspconfig is only used for its bundled server definitions (cmd, root_dir, etc.)
 -- The require("lspconfig") "framework" layer is intentionally NOT used.
 
-local cmp_nvim_lsp = require "cmp_nvim_lsp"
-
--- ── Capabilities ─────────────────────────────────────────────────────────────
-local capabilities = cmp_nvim_lsp.default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+        -- blink cmp
+pcall(vim.cmd.packadd, "blink.cmp")
+local has_blink, blink = pcall(require, "blink.cmp")
+if has_blink then
+	capabilities = blink.get_lsp_capabilities(capabilities)
+end
 
 -- Pass capabilities to every server globally
 vim.lsp.config("*", {
