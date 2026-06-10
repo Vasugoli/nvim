@@ -46,17 +46,17 @@ vim.pack.add {
 	{ src = "https://github.com/windwp/nvim-ts-autotag" }, --enabled
 
 	-- blink.cmp completion UI
-	{ src = "https://github.com/saghen/blink.cmp", version = "v1.*" },
+	{ src = "https://github.com/saghen/blink.cmp", branch = "v1" },
 	-- completion engine dependency
 	{ src = "https://github.com/hrsh7th/nvim-cmp" }, --enabled
 	-- completions dependency
-	{ src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
-	{ src = "https://github.com/hrsh7th/cmp-buffer" },
-	{ src = "https://github.com/hrsh7th/cmp-path" },
-	{ src = "https://github.com/hrsh7th/cmp-cmdline" },
-	{ src = "https://github.com/f3fora/cmp-spell" },
+	-- { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
+	-- { src = "https://github.com/hrsh7th/cmp-buffer" },
+	-- { src = "https://github.com/hrsh7th/cmp-path" },
+	-- { src = "https://github.com/hrsh7th/cmp-cmdline" },
+	-- { src = "https://github.com/f3fora/cmp-spell" },
 	{ src = "https://github.com/L3MON4D3/LuaSnip", version = "v2.4.1" },
-	{ src = "https://github.com/saadparwaiz1/cmp_luasnip" },
+	-- { src = "https://github.com/saadparwaiz1/cmp_luasnip" },
 	{ src = "https://github.com/rafamadriz/friendly-snippets" },
 	{ src = "https://github.com/onsails/lspkind.nvim" },
 	-- Formatting
@@ -89,7 +89,7 @@ vim.pack.add {
 	{ src = "https://github.com/folke/flash.nvim" },
 
 	-- Notification UI
-	{ src = "https://github.com/rcarriga/nvim-notify" },
+	-- { src = "https://github.com/rcarriga/nvim-notify" },
 
 	-- Key display + which-key
 	{ src = "https://github.com/nvzone/showkeys" },
@@ -106,7 +106,6 @@ vim.pack.add {
 	{ src = "https://github.com/nvchad/ui" },
 	{ src = "https://github.com/nvchad/base46" },
 	{ src = "https://github.com/nvzone/volt" },
-	{ src = "https://github.com/nvzone/menu" },
 	{ src = "https://github.com/nvzone/minty" },
 	-- Terminal UI
 	-- { src = "https://github.com/nvzone/floaterm" },
@@ -191,7 +190,7 @@ require "vasu.plugins.utils.snacks"
 require "vasu.plugins.ui.heirline"
 require "vasu.plugins.ui.cursor"
 require "vasu.plugins.ui.nvchad"
-require "vasu.plugins.utils.notify"
+-- require "vasu.plugins.utils.notify"
 require "vasu.plugins.utils.showkeys"
 
 -- File Management

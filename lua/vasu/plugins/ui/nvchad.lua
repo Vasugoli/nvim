@@ -50,21 +50,6 @@ vim.keymap.set("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "NvChad [C]h
 vim.keymap.set("n", "<leader>cp", "<cmd>Huefy<CR>", { desc = "Minty [C]olor [P]icker" })
 vim.keymap.set("n", "<leader>cs", "<cmd>Shades<CR>", { desc = "Minty [C]olor [S]hades" })
 
--- NvZone Menu (context menu)
-vim.keymap.set("n", "<leader>m", function() require("menu").open "default" end, { desc = "NvChad Context [M]enu" })
-
--- Right-click context menu
-vim.keymap.set({ "n", "v" }, "<RightMouse>", function()
-	require("menu.utils").delete_old_menus()
-	vim.cmd.exec '"normal! \\<RightMouse>"'
-
-	local pos = vim.fn.getmousepos()
-	local buf = vim.api.nvim_win_get_buf(pos.winid)
-	local ft = vim.bo[buf].ft
-
-	local options = ft == "neo-tree" and "neo-tree" or "default"
-	require("menu").open(options, { mouse = true })
-end, { desc = "Context Menu (Right Click)" })
 
 -- ── NvChad Terminal ──────────────────────────────────────────────────────────
 local term = require "nvchad.term"

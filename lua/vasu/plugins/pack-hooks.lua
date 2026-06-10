@@ -13,25 +13,20 @@ vim.api.nvim_create_autocmd("PackChanged", {
         -- only run on nvim-treesitter updates/installs
         if event.data.spec and event.data.spec.name == "nvim-treesitter" then
             -- force load plugin if it's not active yet (for vim.pack)
-            if not event.data.active then
-                vim.cmd.packadd("nvim-treesitter")
-            end
+            if not event.data.active then vim.cmd.packadd "nvim-treesitter" end
             -- run :TSUpdate (:TSUpdateSync for blocking)
-            vim.cmd("TSUpdate")
+            vim.cmd "TSUpdate"
         end
         -- FFF nvim
         local name, kind = event.data.spec.name, event.data.kind
-        if name == 'fff.nvim' and (kind == 'install' or kind == 'update') then
-            if not event.data.active then vim.cmd.packadd('fff.nvim') end
-            require('fff.download').download_or_build_binary()
+        if name == "fff.nvim" and (kind == "install" or kind == "update") then
+            if not event.data.active then vim.cmd.packadd "fff.nvim" end
+            require("fff.download").download_or_build_binary()
         end
 
-        -- blink.cmp
-        if name == 'blink.cmp' and (kind == 'install' or kind == 'update') then
-            if not event.data.active then vim.cmd.packadd('blink.cmp') end
-            pcall(function()
-                require('blink.cmp.fuzzy.build').build()
-            end)
+        if name == "blink.cmp" and (kind == "install" or kind == "update") then
+            if not event.data.active then vim.cmd.packadd "blink.cmp" end
+            pcall(function() require("blink.cmp.fuzzy.build").build() end)
         end
-    end
+    end,
 })

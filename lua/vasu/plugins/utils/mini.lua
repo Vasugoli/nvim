@@ -143,6 +143,23 @@ miniComment.setup()
 local miniBracketed = require "mini.bracketed"
 miniBracketed.setup()
 
+local miniNotify = require "mini.notify"
+miniNotify.setup {
+	content = {
+		format = function(notif) return notif.msg end,
+	},
+	window = {
+		config = function()
+			return {
+				title = "",
+				anchor = "SE",
+				row = vim.o.lines - 2,
+				col = vim.o.columns,
+				border = "none",
+			}
+		end,
+	},
+}
 -- Align text by pattern. See `:h MiniAlign` for more details.
 -- local miniAlign = require "mini.align"
 -- miniAlign.setup()

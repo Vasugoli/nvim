@@ -15,32 +15,7 @@
     },
     "blink.cmp": {
       "rev": "b02ac65634bdb8af2dcc4eb6c807c060e1e15ae6",
-      "src": "https://github.com/saghen/blink.cmp",
-      "version": "'v1.*'"
-    },
-    "cmp-buffer": {
-      "rev": "b74fab3656eea9de20a9b8116afa3cfc4ec09657",
-      "src": "https://github.com/hrsh7th/cmp-buffer"
-    },
-    "cmp-cmdline": {
-      "rev": "d126061b624e0af6c3a556428712dd4d4194ec6d",
-      "src": "https://github.com/hrsh7th/cmp-cmdline"
-    },
-    "cmp-nvim-lsp": {
-      "rev": "cbc7b02bb99fae35cb42f514762b89b5126651ef",
-      "src": "https://github.com/hrsh7th/cmp-nvim-lsp"
-    },
-    "cmp-path": {
-      "rev": "c642487086dbd9a93160e1679a1327be111cbc25",
-      "src": "https://github.com/hrsh7th/cmp-path"
-    },
-    "cmp-spell": {
-      "rev": "694a4e50809d6d645c1ea29015dad0c293f019d6",
-      "src": "https://github.com/f3fora/cmp-spell"
-    },
-    "cmp_luasnip": {
-      "rev": "98d9cb5c2c38532bd9bdb481067b20fea8f32e90",
-      "src": "https://github.com/saadparwaiz1/cmp_luasnip"
+      "src": "https://github.com/saghen/blink.cmp"
     },
     "codecompanion.nvim": {
       "rev": "bc82fbca915f28467a2e2e74e11845ce20d8017c",
@@ -97,10 +72,6 @@
     "mason.nvim": {
       "rev": "b03fb0f20bc1d43daf558cda981a2be22e73ac42",
       "src": "https://github.com/mason-org/mason.nvim"
-    },
-    "menu": {
-      "rev": "7a0a4a2896b715c066cfbe320bdc048091874cc6",
-      "src": "https://github.com/nvzone/menu"
     },
     "mini.nvim": {
       "rev": "418ef4930ddabe80f449c6f1323f8b6abb172d1c",
