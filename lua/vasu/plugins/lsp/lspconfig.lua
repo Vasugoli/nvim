@@ -8,9 +8,7 @@
 -- already set up when get_lsp_capabilities() is called here.
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 local has_blink, blink = pcall(require, "blink.cmp")
-if has_blink then
-	capabilities = blink.get_lsp_capabilities(capabilities)
-end
+if has_blink then capabilities = blink.get_lsp_capabilities(capabilities) end
 
 -- Pass capabilities to every server globally
 vim.lsp.config("*", {
@@ -39,20 +37,17 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts)
 
 		opts.desc = "See available code actions"
-		vim.keymap.set({ "n", "v" }, "<leader>ca", function()
-			vim.lsp.buf.code_action()
-		end, opts)
+		vim.keymap.set({ "n", "v" }, "<leader>ca", function() vim.lsp.buf.code_action() end, opts)
 
 		opts.desc = "Smart rename"
-		vim.keymap.set("n", "<leader>rn", function()
-			local ok, renamer = pcall(require, "nvchad.lsp.rename")
+		vim.keymap.set("n", "grn", function()
+			local ok, renamer = pcall(require, "nvchad.lsp.renamer")
 			if ok then
-				renamer.open()
+				renamer()
 			else
 				vim.lsp.buf.rename()
 			end
 		end, opts)
-
 		opts.desc = "Show buffer diagnostics"
 		vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts)
 
@@ -74,29 +69,29 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- ── Diagnostics ──────────────────────────────────────────────────────────────
-vim.diagnostic.config({
+vim.diagnostic.config {
 	signs = {
 		text = {
 			[vim.diagnostic.severity.ERROR] = "󰅖 ",
-			[vim.diagnostic.severity.WARN]  = "󰀪 ",
-			[vim.diagnostic.severity.HINT]  = "󰠠 ",
-			[vim.diagnostic.severity.INFO]  = "󰋼 ",
+			[vim.diagnostic.severity.WARN] = "󰀪 ",
+			[vim.diagnostic.severity.HINT] = "󰠠 ",
+			[vim.diagnostic.severity.INFO] = "󰋼 ",
 		},
 	},
-	virtual_text     = true,
-	underline        = true,
+	virtual_text = true,
+	underline = true,
 	update_in_insert = true,
 	float = {
 		focusable = false,
-		style     = "minimal",
-		border    = "rounded",
-		source    = true,
+		style = "minimal",
+		border = "rounded",
+		source = true,
 	},
-})
+}
 
 vim.keymap.set("n", "<leader>lx", function()
 	local current = vim.diagnostic.config().virtual_text
-	vim.diagnostic.config({ virtual_text = not current })
+	vim.diagnostic.config { virtual_text = not current }
 end, { desc = "Toggle LSP virtual text" })
 
 -- ── LSP reference highlight ───────────────────────────────────────────────────
@@ -104,7 +99,7 @@ end, { desc = "Toggle LSP virtual text" })
 vim.api.nvim_create_autocmd("CursorHold", {
 	group = vim.api.nvim_create_augroup("LspReferenceHighlight", { clear = true }),
 	callback = function()
-		local clients = vim.lsp.get_clients({ bufnr = 0 })
+		local clients = vim.lsp.get_clients { bufnr = 0 }
 		for _, client in ipairs(clients) do
 			if client.server_capabilities.documentHighlightProvider then
 				vim.lsp.buf.document_highlight()
@@ -129,14 +124,14 @@ vim.lsp.config("lua_ls", {
 	settings = {
 		Lua = {
 			diagnostics = { globals = { "vim" } },
-			completion   = { callSnippet = "Replace" },
+			completion = { callSnippet = "Replace" },
 		},
 	},
 })
 
 -- ts_ls (TypeScript / JavaScript)
 vim.lsp.config("ts_ls", {
-	workspace_required  = false,
+	workspace_required = false,
 	single_file_support = true,
 	filetypes = {
 		"javascript",
@@ -146,22 +141,22 @@ vim.lsp.config("ts_ls", {
 	},
 	init_options = {
 		preferences = {
-			includeCompletionsForModuleExports    = true,
+			includeCompletionsForModuleExports = true,
 			includeCompletionsForImportStatements = true,
 		},
 	},
 	settings = {
 		typescript = {
 			inlayHints = {
-				includeInlayParameterNameHints        = "all",
-				includeInlayVariableTypeHints          = true,
+				includeInlayParameterNameHints = "all",
+				includeInlayVariableTypeHints = true,
 				includeInlayFunctionParameterTypeHints = true,
 			},
 		},
 		javascript = {
 			inlayHints = {
-				includeInlayParameterNameHints        = "none",
-				includeInlayVariableTypeHints          = false,
+				includeInlayParameterNameHints = "none",
+				includeInlayVariableTypeHints = false,
 				includeInlayFunctionParameterTypeHints = false,
 			},
 		},
@@ -171,10 +166,10 @@ vim.lsp.config("ts_ls", {
 -- cssls
 vim.lsp.config("cssls", {
 	single_file_support = true,
-	filetypes           = { "css", "scss", "less" },
-	init_options        = { provideFormatter = true },
+	filetypes = { "css", "scss", "less" },
+	init_options = { provideFormatter = true },
 	settings = {
-		css  = { lint = { unknownAtRules = "ignore" }, validate = true },
+		css = { lint = { unknownAtRules = "ignore" }, validate = true },
 		scss = { lint = { unknownAtRules = "ignore" }, validate = true },
 		less = { lint = { unknownAtRules = "ignore" }, validate = true },
 	},
@@ -183,10 +178,15 @@ vim.lsp.config("cssls", {
 -- tailwindcss
 vim.lsp.config("tailwindcss", {
 	filetypes = {
-		"html", "css",
-		"javascript", "typescript",
-		"javascriptreact", "typescriptreact",
-		"svelte", "vue", "astro",
+		"html",
+		"css",
+		"javascript",
+		"typescript",
+		"javascriptreact",
+		"typescriptreact",
+		"svelte",
+		"vue",
+		"astro",
 	},
 	init_options = {
 		userLanguages = { astro = "html" },
@@ -196,7 +196,7 @@ vim.lsp.config("tailwindcss", {
 -- clangd (C / C++)
 vim.lsp.config("clangd", {
 	single_file_support = true,
-	filetypes           = { "c", "cpp", "objc", "objcpp", "cuda" },
+	filetypes = { "c", "cpp", "objc", "objcpp", "cuda" },
 	cmd = {
 		"clangd",
 		"--background-index",
@@ -206,28 +206,28 @@ vim.lsp.config("clangd", {
 		"--function-arg-placeholders=1",
 	},
 	init_options = {
-		usePlaceholders    = true,
+		usePlaceholders = true,
 		completeUnimported = true,
-		clangdFileStatus   = true,
+		clangdFileStatus = true,
 	},
 })
 
 -- pyright (Python)
 vim.lsp.config("pyright", {
 	single_file_support = true,
-	filetypes           = { "python" },
+	filetypes = { "python" },
 	settings = {
 		python = {
 			analysis = {
-				typeCheckingMode       = "standard",
-				autoSearchPaths        = true,
+				typeCheckingMode = "standard",
+				autoSearchPaths = true,
 				useLibraryCodeForTypes = true,
-				diagnosticMode         = "workspace",
+				diagnosticMode = "workspace",
 				inlayHints = {
-					variableTypes       = true,
+					variableTypes = true,
 					functionReturnTypes = true,
-					callArgumentNames   = true,
-					pytestParameters    = true,
+					callArgumentNames = true,
+					pytestParameters = true,
 				},
 			},
 		},
@@ -237,19 +237,19 @@ vim.lsp.config("pyright", {
 -- jdtls (Java)
 vim.lsp.config("jdtls", {
 	single_file_support = true,
-	filetypes           = { "java" },
+	filetypes = { "java" },
 	settings = {
 		java = {
 			inlayHints = {
 				parameterNames = { enabled = "all" },
-				variableTypes  = { enabled = true },
+				variableTypes = { enabled = true },
 			},
 		},
 	},
 })
 
 -- ── Enable servers ────────────────────────────────────────────────────────────
-vim.lsp.enable({
+vim.lsp.enable {
 	"lua_ls",
 	"ts_ls",
 	"html",
@@ -259,4 +259,4 @@ vim.lsp.enable({
 	"clangd",
 	"pyright",
 	"jdtls",
-})
+}

@@ -144,22 +144,63 @@ local miniBracketed = require "mini.bracketed"
 miniBracketed.setup()
 
 local miniNotify = require "mini.notify"
+
+-- Level icons for notification formatting
+local level_icons = {
+	ERROR = " ",
+	WARN = " ",
+	INFO = " ",
+	DEBUG = " ",
+	TRACE = "✎ ",
+}
+
 miniNotify.setup {
 	content = {
-		format = function(notif) return notif.msg end,
-	},
-	window = {
-		config = function()
-			return {
-				title = "",
-				anchor = "SE",
-				row = vim.o.lines - 2,
-				col = vim.o.columns,
-				border = "none",
-			}
+		-- Show level icon + message, collapse newlines to single line
+		format = function(notif)
+			local icon = level_icons[notif.level] or " "
+			local msg = notif.msg:gsub("\n", " ")
+			return icon .. msg
+		end,
+		-- Newest notification on top — ts_update is the correct field (see :h MiniNotify-specification)
+		sort = function(notif_arr)
+			table.sort(notif_arr, function(a, b) return (a.ts_update or 0) > (b.ts_update or 0) end)
+			return notif_arr
 		end,
 	},
+	window = {
+		-- Top-right corner — defaults from docs are already NE/columns/0
+		-- Override only border and zindex; let mini handle row/col/width automatically
+		config = function()
+			return {
+				anchor = "NE",
+				col = vim.o.columns,
+				row = 1,
+				border = "rounded",
+				zindex = 999,
+			}
+		end,
+		winblend = 15,
+		max_width_share = 0.4,
+	},
+	lsp_progress = {
+		enable = true,
+		duration_last = 1000,
+	},
 }
+
+-- make_notify() controls per-level duration and highlight groups
+-- ERROR/WARN stay longer (5s default), INFO shorter, DEBUG/TRACE hidden
+vim.notify = MiniNotify.make_notify {
+	ERROR = { duration = 6000, hl_group = "DiagnosticError" },
+	WARN = { duration = 5000, hl_group = "DiagnosticWarn" },
+	INFO = { duration = 3000, hl_group = "DiagnosticInfo" },
+	DEBUG = { duration = 0, hl_group = "DiagnosticHint" },
+	TRACE = { duration = 0, hl_group = "DiagnosticOk" },
+}
+
+-- History keymap — show all past notifications in a scratch buffer
+vim.keymap.set("n", "<leader>hn", function() MiniNotify.show_history() end, { desc = "Notification history" })
 -- Align text by pattern. See `:h MiniAlign` for more details.
 -- local miniAlign = require "mini.align"
 -- miniAlign.setup()

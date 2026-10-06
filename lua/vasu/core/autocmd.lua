@@ -46,7 +46,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 			local op = event.operator or "y"
 			local message = string.format("Yanked %d line(s) [%s]", num_lines, op)
 			-- Schedule the notification to avoid conflict with built-in echo
-			vim.schedule(function() vim.notify(message, "info", { title = "Yanked" }) end)
+			vim.schedule(function() vim.notify(message, vim.log.levels.INFO, { title = "Yanked" }) end)
 		end
 	end,
 })
@@ -92,7 +92,7 @@ vim.api.nvim_create_autocmd("CursorMoved", {
 
 ---- Notification file save
 vim.api.nvim_create_autocmd("BufWritePost", {
-	callback = function() vim.notify("File saved: " .. vim.fn.expand "%", "info") end,
+	callback = function() vim.notify("File saved: " .. vim.fn.expand "%", vim.log.levels.INFO) end,
 })
 -- Restore cursor position
 vim.api.nvim_create_autocmd("BufReadPost", {

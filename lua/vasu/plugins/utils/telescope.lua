@@ -107,12 +107,3 @@ end, { desc = "Live grep in JS/TS files" })
 
 -- Find todos
 keymap("n", "<leader>ft", "<cmd>TodoTelescope<cr>", { desc = "Find todos" })
-
--- Notification history via telescope-notify extension (if available)
-keymap("n", "<leader>hn", function()
-	if pcall(telescope.load_extension, "notify") then
-		telescope.extensions.notify.notify()
-	else
-		vim.notify("Telescope notify extension not available", vim.log.levels.WARN)
-	end
-end, { desc = "Notification history" })

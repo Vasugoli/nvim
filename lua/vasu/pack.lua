@@ -88,9 +88,6 @@ vim.pack.add {
 	-- Jump / motion
 	{ src = "https://github.com/folke/flash.nvim" },
 
-	-- Notification UI
-	-- { src = "https://github.com/rcarriga/nvim-notify" },
-
 	-- Key display + which-key
 	{ src = "https://github.com/nvzone/showkeys" },
 	{ src = "https://github.com/folke/which-key.nvim" },
@@ -190,7 +187,6 @@ require "vasu.plugins.utils.snacks"
 require "vasu.plugins.ui.heirline"
 require "vasu.plugins.ui.cursor"
 require "vasu.plugins.ui.nvchad"
--- require "vasu.plugins.utils.notify"
 require "vasu.plugins.utils.showkeys"
 
 -- File Management
