@@ -137,7 +137,13 @@ surround.setup {
 
 -- Commenting module. Supports both `gc` and `gb` mappings (like vim-commentary),
 local miniComment = require "mini.comment"
-miniComment.setup()
+miniComment.setup {
+	options = {
+		custom_commentstring = function()
+			return require("ts_context_commentstring.internal").calculate_commentstring() or vim.bo.commentstring
+		end,
+	},
+}
 
 -- Bracketed some useful keymaps. See `:h MiniBracketed` for more details.
 local miniBracketed = require "mini.bracketed"
@@ -204,3 +210,12 @@ vim.keymap.set("n", "<leader>hn", function() MiniNotify.show_history() end, { de
 -- Align text by pattern. See `:h MiniAlign` for more details.
 -- local miniAlign = require "mini.align"
 -- miniAlign.setup()
+
+-- Auto pairs. See `:h MiniPairs` for more details.
+local miniPairs = require "mini.pairs"
+miniPairs.setup {
+	mappings = {
+		-- Disable default mapping for <BS> in insert mode
+		["<BS>"] = false,
+	},
+}
