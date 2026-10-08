@@ -20,6 +20,7 @@ o.splitkeep = "screen"
 o.clipboard = "unnamedplus"
 o.cursorline = true
 o.cursorlineopt = "number"
+o.scrolloff = 999 -- keep cursor vertically centered
 
 -- Indenting
 o.expandtab = true

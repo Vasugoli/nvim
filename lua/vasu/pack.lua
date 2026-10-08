@@ -19,7 +19,7 @@ vim.pack.add {
     { src = "https://github.com/folke/snacks.nvim" }, -- File Explorer and few other modules
 
     -- Session management
-    { src = "https://github.com/rmagatti/auto-session" },
+    -- { src = "https://github.com/rmagatti/auto-session" },
 
     -- folding
     -- { src = "https://github.com/kevinhwang91/nvim-ufo" },
@@ -71,8 +71,8 @@ vim.pack.add {
     { src = "https://github.com/github/copilot.vim" },
     { src = "https://github.com/olimorris/codecompanion.nvim" },
 
-    -- Centered scroll
-    { src = "https://github.com/arnamak/stay-centered.nvim" },
+    -- Centered scroll → replaced by scrolloff=999 in options.lua
+    -- { src = "https://github.com/arnamak/stay-centered.nvim" },
 
     -- Jump / motion
     { src = "https://github.com/folke/flash.nvim" },
@@ -169,11 +169,11 @@ require "vasu.plugins.utils.yazi"
 require "vasu.plugins.utils.telescope"
 require "vasu.plugins.utils.markdown"
 require "vasu.plugins.utils.fff"
-require "vasu.plugins.utils.session"
+-- require "vasu.plugins.utils.session"
 require "vasu.plugins.utils.flash"
 require "vasu.plugins.utils.git"
 require "vasu.plugins.utils.trouble"
-require "vasu.plugins.utils.centered"
+-- require "vasu.plugins.utils.centered" -- replaced by scrolloff=999
 
 require "vasu.plugins.ui.heirline"
 require "vasu.plugins.ui.nvchad"

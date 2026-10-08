@@ -7,7 +7,10 @@ require("showkeys").setup({
     winopts = {border = "rounded", style = "minimal"}
 })
 
--- Toggle with <leader>sk (showkeys does not auto-start on setup)
+-- Auto-start on launch (schedule so the UI is fully ready first)
+vim.schedule(function() vim.cmd "ShowkeysToggle" end)
+
+-- Toggle with <leader>sk
 vim.keymap.set("n", "<leader>sk", "<cmd>ShowkeysToggle<CR>",
                {desc = "Toggle Showkeys"})
 
