@@ -8,7 +8,6 @@ require "vasu.plugins.pack-hooks"
 vim.pack.add {
     -- File finder
     { src = "https://github.com/dmtrKovalenko/fff.nvim" },
-    { src = "https://github.com/nvim-telescope/telescope.nvim", branch = "master" },
     { src = "https://github.com/nvim-lua/plenary.nvim" },
 
     -- statusline
@@ -17,9 +16,6 @@ vim.pack.add {
     -- File explorer
     { src = "https://github.com/mikavilpas/yazi.nvim" },
     { src = "https://github.com/folke/snacks.nvim" }, -- File Explorer and few other modules
-
-    -- Session management
-    -- { src = "https://github.com/rmagatti/auto-session" },
 
     -- folding
     -- { src = "https://github.com/kevinhwang91/nvim-ufo" },
@@ -33,6 +29,7 @@ vim.pack.add {
 
     -- MINI modules
     { src = "https://github.com/echasnovski/mini.nvim" },
+
     -- nvim-ts-context-commentstring
     { src = "https://github.com/JoosepAlviste/nvim-ts-context-commentstring" },
 
@@ -71,15 +68,15 @@ vim.pack.add {
     { src = "https://github.com/github/copilot.vim" },
     { src = "https://github.com/olimorris/codecompanion.nvim" },
 
-    -- Centered scroll → replaced by scrolloff=999 in options.lua
-    -- { src = "https://github.com/arnamak/stay-centered.nvim" },
-
-    -- Jump / motion
+    -- Jump / motion & smooth scroll
     { src = "https://github.com/folke/flash.nvim" },
+    { src = "https://github.com/karb94/neoscroll.nvim" },
+    { src = "https://github.com/chrisgrieser/nvim-origami" },
+    { src = "https://github.com/sphamba/smear-cursor.nvim" },
 
     -- Key display + which-key
     { src = "https://github.com/nvzone/showkeys" },
-    { src = "https://github.com/folke/which-key.nvim" },
+    -- { src = "https://github.com/folke/which-key.nvim" },
 
     -- DAP (debugger) stack
     { src = "https://github.com/mfussenegger/nvim-dap" },
@@ -166,20 +163,21 @@ require "vasu.plugins.utils.snacks"
 require "vasu.plugins.utils.mini"
 require "vasu.plugins.utils.showkeys"
 require "vasu.plugins.utils.yazi"
-require "vasu.plugins.utils.telescope"
 require "vasu.plugins.utils.markdown"
 require "vasu.plugins.utils.fff"
--- require "vasu.plugins.utils.session"
 require "vasu.plugins.utils.flash"
 require "vasu.plugins.utils.git"
 require "vasu.plugins.utils.trouble"
 -- require "vasu.plugins.utils.centered" -- replaced by scrolloff=999
+require "vasu.plugins.utils.origami"
 
 require "vasu.plugins.ui.heirline"
+require "vasu.plugins.ui.neoscroll"
+require "vasu.plugins.ui.smear-cursor"
 require "vasu.plugins.ui.nvchad"
 
 require "vasu.plugins.lsp.formatting"
-require "vasu.plugins.lsp.nvim-cmp"
+require "vasu.plugins.lsp.completions"
 require "vasu.plugins.lsp.mason"
 require "vasu.plugins.lsp.lspconfig"
 require "vasu.plugins.lsp.debug"

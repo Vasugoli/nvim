@@ -20,7 +20,12 @@ o.splitkeep = "screen"
 o.clipboard = "unnamedplus"
 o.cursorline = true
 o.cursorlineopt = "number"
-o.scrolloff = 999 -- keep cursor vertically centered
+
+-- Origami fold options
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
+
 
 -- Indenting
 o.expandtab = true
@@ -50,6 +55,7 @@ o.splitright = true
 o.timeoutlen = 400
 o.undofile = true
 
+o.shell = "nu"
 opt.termguicolors = true
 opt.signcolumn = "yes"
 -- Helpful for searching

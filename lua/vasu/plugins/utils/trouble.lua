@@ -9,8 +9,7 @@ vim.keymap.set("n", "<leader>xq", "<cmd>Trouble quickfix toggle<CR>",
                {desc = "Open trouble quickfix list"})
 vim.keymap.set("n", "<leader>xl", "<cmd>Trouble loclist toggle<CR>",
                {desc = "Open trouble location list"})
-vim.keymap.set("n", "<leader>xt", "<cmd>Trouble todo toggle<CR>",
-               {desc = "Open todos in trouble"})
+
 
 require("tiny-inline-diagnostic").setup({
     -- Style preset for diagnostic messages

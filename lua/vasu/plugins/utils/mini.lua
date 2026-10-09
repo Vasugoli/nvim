@@ -266,10 +266,18 @@ miniSessions.setup {
 -- ── MiniSessions Keymaps (<leader>w = workspace/session) ─────────────────────
 local map = vim.keymap.set
 
--- Write / overwrite current session
+-- Write / overwrite current session (prompts for name if no active session)
 map("n", "<leader>ws", function()
-	local name = vim.v.this_session ~= "" and vim.fn.fnamemodify(vim.v.this_session, ":t") or nil
-	miniSessions.write(name)
+	if vim.v.this_session ~= "" then
+		local name = vim.fn.fnamemodify(vim.v.this_session, ":t")
+		miniSessions.write(name)
+	else
+		vim.ui.input({ prompt = "No active session. Save as: ", default = vim.fn.fnamemodify(vim.fn.getcwd(), ":t") }, function(name)
+			if name and name ~= "" then
+				miniSessions.write(name)
+			end
+		end)
+	end
 end, { desc = "Session: save current" })
 
 -- Save with a new name (prompted)
@@ -324,4 +332,64 @@ map("n", "<leader>wl", function()
 		vim.notify("Sessions:\n" .. table.concat(lines, "\n"), vim.log.levels.INFO)
 	end
 end, { desc = "Session: list all" })
+
+-- ── MiniOperators ────────────────────────────────────────────────────────────
+-- Text edit operators:
+--   • Evaluate (g=): evaluate lua/math expression and replace
+--   • Exchange (gx): swap two regions of text
+--   • Multiply (gm): duplicate and repeat text regions
+--   • Replace  (gr): replace textobject with register contents
+--   • Sort     (gs): sort lines or textobject elements
+local miniOperators = require "mini.operators"
+miniOperators.setup {
+	evaluate = { prefix = "g=" },
+	exchange = { prefix = "gx" },
+	multiply = { prefix = "gm" },
+	replace  = { prefix = "gr" },
+	sort     = { prefix = "gs" },
+}
+
+-- ── MiniClue ─────────────────────────────────────────────────────────────────
+-- Show key clues / completions for multi-key sequences
+local miniClue = require "mini.clue"
+miniClue.setup {
+	triggers = {
+		-- Leader triggers
+		{ mode = "n", keys = "<Leader>" },
+		{ mode = "x", keys = "<Leader>" },
+
+		-- Built-in completion / jump triggers
+		{ mode = "n", keys = "g" },
+		{ mode = "x", keys = "g" },
+		{ mode = "n", keys = "z" },
+		{ mode = "x", keys = "z" },
+		{ mode = "n", keys = "[" },
+		{ mode = "n", keys = "]" },
+		{ mode = "n", keys = "<C-w>" },
+	},
+
+	clues = {
+		-- Standard mini.clue builtin helpers
+		miniClue.gen_clues.builtin_completion(),
+		miniClue.gen_clues.g(),
+		miniClue.gen_clues.marks(),
+		miniClue.gen_clues.registers(),
+		miniClue.gen_clues.windows(),
+		miniClue.gen_clues.z(),
+
+		-- Custom group clues for your keymaps
+		{ mode = "n", keys = "<Leader>s", desc = "+split" },
+		{ mode = "n", keys = "<Leader>w", desc = "+session/workspace" },
+		{ mode = "n", keys = "<Leader>t", desc = "+terminal" },
+		{ mode = "n", keys = "<Leader>z", desc = "+fold" },
+	},
+
+	window = {
+		delay = 400,
+		config = {
+			border = "rounded",
+		},
+	},
+}
+
 

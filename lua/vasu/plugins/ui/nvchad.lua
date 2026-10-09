@@ -38,42 +38,23 @@ if status_ui then
 end
 
 -- Keymaps for NvChad features
-vim.keymap.set("n", "<leader>ht", function()
+vim.keymap.set("n", "<leader>ct", function()
 	require("nvchad.themes").open {
 		style = "flat", -- flat/rounded/bordered
 	}
-end, { desc = "NvChad [T]heme [H]istory / Switcher" })
+end, { desc = "NvChad Theme Switcher" })
 
-vim.keymap.set("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "NvChad [C]heat[H]sheet" })
+vim.keymap.set("n", "<leader>ch", "<cmd>NvCheatsheet<CR>", { desc = "NvChad CheatSheet" })
 
 -- Minty (color picker & shades)
-vim.keymap.set("n", "<leader>cp", "<cmd>Huefy<CR>", { desc = "Minty [C]olor [P]icker" })
-vim.keymap.set("n", "<leader>cs", "<cmd>Shades<CR>", { desc = "Minty [C]olor [S]hades" })
+vim.keymap.set("n", "<leader>cp", "<cmd>Huefy<CR>", { desc = "Minty Color Picker" })
+vim.keymap.set("n", "<leader>cs", "<cmd>Shades<CR>", { desc = "Minty Color Shades" })
 
 
 -- ── NvChad Terminal ──────────────────────────────────────────────────────────
-local term = require "nvchad.term"
+-- (Disabled in favor of native terminal splits in keymaps.lua)
+-- local term = require "nvchad.term"
+-- vim.keymap.set({ "n", "t" }, "<leader>tt", function() term.toggle { pos = "float", id = "floatTerm" } end, { desc = "Toggle float terminal" })
+-- vim.keymap.set({ "n", "t" }, "<leader>th", function() term.toggle { pos = "sp", id = "hterm" } end, { desc = "Toggle horizontal terminal" })
+-- vim.keymap.set({ "n", "t" }, "<leader>tv", function() term.toggle { pos = "vsp", id = "vterm" } end, { desc = "Toggle vertical terminal" })
 
--- Float terminal toggle (main one you'll use daily)
-vim.keymap.set(
-	{ "n", "t" },
-	"<leader>tt",
-	function() term.toggle { pos = "float", id = "floatTerm" } end,
-	{ desc = "Toggle float terminal" }
-)
-
--- Horizontal split terminal toggle
-vim.keymap.set(
-	{ "n", "t" },
-	"<leader>th",
-	function() term.toggle { pos = "sp", id = "hterm" } end,
-	{ desc = "Toggle horizontal terminal" }
-)
-
--- Vertical split terminal toggle
-vim.keymap.set(
-	{ "n", "t" },
-	"<leader>tv",
-	function() term.toggle { pos = "vsp", id = "vterm" } end,
-	{ desc = "Toggle vertical terminal" }
-)

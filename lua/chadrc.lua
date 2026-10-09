@@ -4,8 +4,8 @@
 local M = {}
 
 M.base46 = {
-	theme = "chadracula-evondev", -- default theme
-	transparency = true,
+	theme = "eldritch", -- default theme
+	transparency = false,
 }
 
 M.ui = {

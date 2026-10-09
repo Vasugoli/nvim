@@ -259,4 +259,5 @@ vim.lsp.enable {
 	"clangd",
 	"pyright",
 	"jdtls",
+	"gopls",
 }

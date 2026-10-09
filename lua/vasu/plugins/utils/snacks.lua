@@ -148,14 +148,12 @@ vim.api.nvim_create_autocmd("UIEnter", {
 			:map "<leader>uc"
 
 		-- UI
-		Snacks.toggle.indent():map "<leader>ug"
-		Snacks.toggle.dim():map "<leader>ue"
-		Snacks.toggle.zoom():map "<leader>uZ" -- ← NEW: maximize split
-		Snacks.toggle.zen():map "<leader>uz" -- ← NEW: zen mode
+		Snacks.toggle.indent():map "<leader>ui"
+		Snacks.toggle.zoom():map "<leader>uz" -- ← NEW: maximize split
 
 		-- LSP / code
 		Snacks.toggle.diagnostics():map "<leader>ud"
-		-- Snacks.toggle.inlay_hints():map "<leader>uh"
+		Snacks.toggle.inlay_hints():map "<leader>uh"
 		Snacks.toggle.treesitter():map "<leader>ut"
 
 		-- AI
@@ -164,6 +162,12 @@ vim.api.nvim_create_autocmd("UIEnter", {
 			get = function() return vim.g.copilot_enabled ~= false end,
 			set = function(state) vim.cmd(state and "Copilot enable" or "Copilot disable") end,
 		}):map "<leader>ua"
+
+		-- Zen mode
+		Snacks.toggle.zen {
+			exclude_filetypes = { "Trouble" },
+			exclude_ft_patterns = { "^packer.*", "^Lazy" },
+		}:map "<leader>z"
 	end,
 })
 -- ── Keymaps ──────────────────────────────────────────────────────────────────
@@ -197,16 +201,7 @@ vim.keymap.set("n", "<leader>fk", function() Snacks.picker.keymaps() end, { desc
 vim.keymap.set("n", "<leader>fd", function() Snacks.picker.diagnostics() end, { desc = "Search Diagnostics" })
 vim.keymap.set("n", "<leader>ss", function() Snacks.picker.pickers() end, { desc = "Search Select Picker" })
 vim.keymap.set("n", "<leader>/", function() Snacks.picker.lines() end, { desc = "Search in current buffer" })
-vim.keymap.set("n", "<leader>s/", function()
-	local open_buffers = {}
-	for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-		if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buflisted then
-			local name = vim.api.nvim_buf_get_name(buf)
-			if name ~= "" then table.insert(open_buffers, name) end
-		end
-	end
-	Snacks.picker.grep { search_dirs = open_buffers }
-end, { desc = "Search in Open Files" })
+
 
 -- Word navigation
 vim.keymap.set({ "n", "t" }, "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "Next Reference" })
