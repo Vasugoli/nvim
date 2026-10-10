@@ -19,11 +19,15 @@ vim.keymap.set("t", "jk", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 vim.keymap.set("n", "<leader>tv", "<cmd>vsplit | terminal<CR>i", { desc = "Terminal: vertical split" })
 vim.keymap.set("n", "<leader>th", "<cmd>split | terminal<CR>i", { desc = "Terminal: horizontal split" })
 
--- TIP: Disable arrow keys in normal mode
-vim.keymap.set("n", "<left>", '<cmd>echo "Use h to move!!"<CR>')
-vim.keymap.set("n", "<right>", '<cmd>echo "Use l to move!!"<CR>')
-vim.keymap.set("n", "<up>", '<cmd>echo "Use k to move!!"<CR>')
-vim.keymap.set("n", "<down>", '<cmd>echo "Use j to move!!"<CR>')
+-- TIP: Disable arrow keys in normal mode with popup notification
+local function arrow_warn(direction, key)
+	vim.notify("Use '" .. key .. "' to move " .. direction .. "!!", vim.log.levels.WARN, { title = "Arrow Keys Disabled" })
+end
+
+vim.keymap.set("n", "<left>", function() arrow_warn("left", "h") end, { desc = "Disable Left arrow" })
+vim.keymap.set("n", "<right>", function() arrow_warn("right", "l") end, { desc = "Disable Right arrow" })
+vim.keymap.set("n", "<up>", function() arrow_warn("up", "k") end, { desc = "Disable Up arrow" })
+vim.keymap.set("n", "<down>", function() arrow_warn("down", "j") end, { desc = "Disable Down arrow" })
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
