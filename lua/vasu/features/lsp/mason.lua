@@ -1,3 +1,6 @@
+-- lua/vasu/features/lsp/mason.lua
+-- Mason tool manager & LSP installer
+
 local function setup_mason()
 	local ok_mason, mason = pcall(require, "mason")
 	if not ok_mason then return end
@@ -50,4 +53,3 @@ end
 
 -- Defer Mason setup and tool checking to the event loop so it doesn't block startup
 vim.schedule(setup_mason)
-

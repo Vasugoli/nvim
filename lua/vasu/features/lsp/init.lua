@@ -1,11 +1,13 @@
--- lua/vasu/plugins/lsp/lspconfig.lua
--- Uses native vim.lsp.config / vim.lsp.enable (Neovim 0.11+ API)
--- nvim-lspconfig is only used for its bundled server definitions (cmd, root_dir, etc.)
--- The require("lspconfig") "framework" layer is intentionally NOT used.
+-- lua/vasu/features/lsp/init.lua
+-- Language Server Protocol configuration (Neovim 0.11+ API)
+
+-- ── Submodules ────────────────────────────────────────────────────────────────
+require("vasu.features.lsp.diagnostics")
+require("vasu.features.lsp.formatting")
+require("vasu.features.lsp.mason")
 
 -- ── Capabilities ─────────────────────────────────────────────────────────────
--- NOTE: nvim-cmp.lua must be required BEFORE this file so blink.cmp is
--- already set up when get_lsp_capabilities() is called here.
+-- Capabilities from blink.cmp (configured in vasu.features.completion)
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 local has_blink, blink = pcall(require, "blink.cmp")
 if has_blink then capabilities = blink.get_lsp_capabilities(capabilities) end
@@ -68,7 +70,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	end,
 })
 
--- ── Diagnostics ──────────────────────────────────────────────────────────────
+-- ── Diagnostics Configuration ────────────────────────────────────────────────
 vim.diagnostic.config {
 	signs = {
 		text = {
@@ -115,10 +117,6 @@ vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
 })
 
 -- ── Server Configs ────────────────────────────────────────────────────────────
--- vim.lsp.config() sets config for a server name.
--- vim.lsp.enable() at the bottom is the single place that starts servers.
--- mason-lspconfig must have automatic_enable = false (see mason.lua).
-
 -- lua_ls
 vim.lsp.config("lua_ls", {
 	settings = {

@@ -14,7 +14,6 @@ end)
 
 require "vasu.core"
 require "vasu.pack"
-require "vasu.plugins"
 require "vasu.features"
 
 dofile(vim.g.base46_cache .. "syntax")

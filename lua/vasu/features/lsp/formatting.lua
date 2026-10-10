@@ -1,4 +1,8 @@
-local conform = require "conform"
+-- lua/vasu/features/lsp/formatting.lua
+-- Conform code formatting configuration
+
+local ok, conform = pcall(require, "conform")
+if not ok then return end
 
 conform.setup {
 	formatters_by_ft = {

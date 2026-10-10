@@ -1,5 +1,7 @@
+-- lua/vasu/features/ui/statusline.lua
+-- Heirline statusline configuration
+
 local conditions = require "heirline.conditions"
-local utils = require "heirline.utils"
 local devicons = require "nvim-web-devicons"
 
 local function get_hl(name)
@@ -207,7 +209,6 @@ local DAP = {
 	hl = { fg = colors.red, bold = true },
 }
 
-
 --------------------------------------------------
 -- PROJECT CAPSULE
 --------------------------------------------------
@@ -266,7 +267,7 @@ local ScrollBar = {
 }
 
 --------------------------------------------------
--- STATUSLINE
+-- STATUSLINE SETUP
 --------------------------------------------------
 require("heirline").setup {
 	statusline = {
@@ -286,5 +287,3 @@ require("heirline").setup {
 	},
 	opts = { colors = colors },
 }
-
-

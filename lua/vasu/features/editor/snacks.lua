@@ -1,6 +1,10 @@
+-- lua/vasu/features/editor/snacks.lua
 -- folke/snacks.nvim — swiss-army UI toolkit
--- ── Setup ────────────────────────────────────────────────────────────────────
-require("snacks").setup {
+
+local ok, snacks = pcall(require, "snacks")
+if not ok then return end
+
+snacks.setup {
 	bigfile = { enabled = true },
 	quickfile = { enabled = true },
 	statuscolumn = { enabled = true },
@@ -16,8 +20,6 @@ require("snacks").setup {
 
 	dashboard = {
 		enabled = false,
-		-- Explicitly define sections to avoid the built-in 'startup' section
-		-- which calls require('lazy.stats') — a lazy.nvim internal not available here.
 		sections = {
 			{ section = "header" },
 			{ section = "keys", gap = 1, padding = 1 },
@@ -132,7 +134,6 @@ require("snacks").setup {
 vim.api.nvim_create_autocmd("UIEnter", {
 	once = true,
 	callback = function()
-		-- Debug globals
 		_G.dd = function(...) Snacks.debug.inspect(...) end
 		_G.bt = function() Snacks.debug.backtrace() end
 		vim.print = _G.dd
@@ -149,7 +150,7 @@ vim.api.nvim_create_autocmd("UIEnter", {
 
 		-- UI
 		Snacks.toggle.indent():map "<leader>ui"
-		Snacks.toggle.zoom():map "<leader>uz" -- ← NEW: maximize split
+		Snacks.toggle.zoom():map "<leader>uz"
 
 		-- LSP / code
 		Snacks.toggle.diagnostics():map "<leader>ud"
@@ -170,8 +171,8 @@ vim.api.nvim_create_autocmd("UIEnter", {
 		}:map "<leader>z"
 	end,
 })
--- ── Keymaps ──────────────────────────────────────────────────────────────────
 
+-- ── Keymaps ──────────────────────────────────────────────────────────────────
 -- Buffer management
 vim.keymap.set("n", "<leader>e", function() Snacks.explorer() end, { desc = "explorer " })
 vim.keymap.set("n", "<leader><leader>", function() Snacks.picker.buffers() end, { desc = "Find existing buffers" })
@@ -201,7 +202,6 @@ vim.keymap.set("n", "<leader>fk", function() Snacks.picker.keymaps() end, { desc
 vim.keymap.set("n", "<leader>fd", function() Snacks.picker.diagnostics() end, { desc = "Search Diagnostics" })
 vim.keymap.set("n", "<leader>ss", function() Snacks.picker.pickers() end, { desc = "Search Select Picker" })
 vim.keymap.set("n", "<leader>/", function() Snacks.picker.lines() end, { desc = "Search in current buffer" })
-
 
 -- Word navigation
 vim.keymap.set({ "n", "t" }, "]]", function() Snacks.words.jump(vim.v.count1) end, { desc = "Next Reference" })

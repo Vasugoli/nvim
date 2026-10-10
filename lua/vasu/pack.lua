@@ -2,7 +2,7 @@
 -- native 0.12 vimpack plugin manager
 
 -- early pack hooks
-require "vasu.plugins.pack-hooks"
+require "vasu.pack-hooks"
 
 -- Plugins
 vim.pack.add {

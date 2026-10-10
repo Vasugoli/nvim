@@ -1,5 +1,10 @@
--- gitsigns.nvim
-require("gitsigns").setup {
+-- lua/vasu/features/editor/git.lua
+-- Git signs & hunks integration (gitsigns.nvim)
+
+local ok, gitsigns = pcall(require, "gitsigns")
+if not ok then return end
+
+gitsigns.setup {
 	signs = {
 		add = { text = "┃" },
 		change = { text = "┃" },
@@ -17,17 +22,17 @@ require("gitsigns").setup {
 		untracked = { text = "┆" },
 	},
 	signs_staged_enable = true,
-	signcolumn = true, -- Toggle with `:Gitsigns toggle_signs`
-	numhl = false, -- Toggle with `:Gitsigns toggle_numhl`
-	linehl = false, -- Toggle with `:Gitsigns toggle_linehl`
-	word_diff = false, -- Toggle with `:Gitsigns toggle_word_diff`
+	signcolumn = true,
+	numhl = false,
+	linehl = false,
+	word_diff = false,
 	watch_gitdir = { follow_files = true },
 	auto_attach = true,
 	attach_to_untracked = true,
-	current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
+	current_line_blame = true,
 	current_line_blame_opts = {
 		virt_text = true,
-		virt_text_pos = "eol", -- 'eol' | 'overlay' | 'right_align'
+		virt_text_pos = "eol",
 		delay = 1000,
 		ignore_whitespace = false,
 		virt_text_priority = 100,
@@ -75,7 +80,7 @@ require("gitsigns").setup {
 		map("n", "gub", gs.toggle_current_line_blame, "Toggle Line Blame")
 		map("n", "ghd", gs.diffthis, "Diff This")
 		map("n", "ghD", function() gs.diffthis "~" end, "Diff This ~")
-		map("n", "gtd", gs.toggle_deleted, "Toggle Deleted")
+		map("gtd", gs.toggle_deleted, "Toggle Deleted")
 
 		-- Text object
 		map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "Gitsigns Select Hunk")

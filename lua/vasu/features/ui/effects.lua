@@ -1,4 +1,20 @@
-local neoscroll = require("neoscroll")
+-- lua/vasu/features/ui/effects.lua
+-- Visual motion effects: smooth scroll (neoscroll) & cursor animation (smear_cursor)
+
+-- ── Smear Cursor ─────────────────────────────────────────────────────────────
+local ok_smear, smear = pcall(require, "smear_cursor")
+if ok_smear then
+	smear.setup {
+		stiffness = 0.6,
+		trailing_stiffness = 0.3,
+		distance_stop_animating = 0.1,
+		hide_target_hack = false,
+	}
+end
+
+-- ── Neoscroll ────────────────────────────────────────────────────────────────
+local ok_neoscroll, neoscroll = pcall(require, "neoscroll")
+if not ok_neoscroll then return end
 
 neoscroll.setup {
 	mappings = {}, -- Handled manually below for fine-tuned speed and custom keys
