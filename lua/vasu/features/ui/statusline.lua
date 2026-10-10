@@ -34,34 +34,16 @@ local ViMode = {
 	init = function(self) self.mode = vim.fn.mode(1) end,
 	static = {
 		names = {
-			n = "NORMAL",
-			i = "INSERT",
-			v = "VISUAL",
-			V = "V-LINE",
-			["\22"] = "V-BLOCK",
-			c = "COMMAND",
-			R = "REPLACE",
-			t = "TERMINAL",
+			n = "NORMAL", i = "INSERT", v = "VISUAL", V = "V-LINE",
+			["\22"] = "V-BLOCK", c = "COMMAND", R = "REPLACE", t = "TERMINAL",
 		},
 		icons = {
-			n = "󰋜",
-			i = "󰏫",
-			v = "󰈈",
-			V = "󰈈",
-			["\22"] = "󰈈",
-			c = "󰘳",
-			R = "󰛔",
-			t = "",
+			n = "󰋜", i = "󰏫", v = "󰈈", V = "󰈈",
+			["\22"] = "󰈈", c = "󰘳", R = "󰛔", t = "",
 		},
 		colors = {
-			n = "blue",
-			i = "green",
-			v = "purple",
-			V = "purple",
-			["\22"] = "purple",
-			c = "orange",
-			R = "red",
-			t = "cyan",
+			n = "blue", i = "green", v = "purple", V = "purple",
+			["\22"] = "purple", c = "orange", R = "red", t = "cyan",
 		},
 	},
 	provider = function(self)
@@ -125,18 +107,11 @@ local Diagnostics = {
 	condition = conditions.has_diagnostics,
 	static = { error = " ", warn = " ", info = " ", hint = "󰌵 " },
 	init = function(self)
-		self.errors = #vim.diagnostic.get(0, {
-			severity = vim.diagnostic.severity.ERROR,
-		})
-		self.warnings = #vim.diagnostic.get(0, {
-			severity = vim.diagnostic.severity.WARN,
-		})
-		self.info = #vim.diagnostic.get(0, {
-			severity = vim.diagnostic.severity.INFO,
-		})
-		self.hints = #vim.diagnostic.get(0, {
-			severity = vim.diagnostic.severity.HINT,
-		})
+		local sev = vim.diagnostic.severity
+		self.errors = #vim.diagnostic.get(0, { severity = sev.ERROR })
+		self.warnings = #vim.diagnostic.get(0, { severity = sev.WARN })
+		self.info = #vim.diagnostic.get(0, { severity = sev.INFO })
+		self.hints = #vim.diagnostic.get(0, { severity = sev.HINT })
 	end,
 	provider = function(self)
 		return " "
@@ -161,20 +136,8 @@ local LSP = {
 	end,
 	provider = function()
 		local names, seen = {}, {}
-		local blacklist = {
-			["copilot"] = true,
-			["github copilot"] = true,
-			["null-ls"] = true,
-			["stylua"] = true,
-		}
-		local rename = {
-			["lua_ls"] = "LuaLS",
-			["pyright"] = "Pyright",
-			["tsserver"] = "TS",
-			["gopls"] = "Go",
-			["clangd"] = "C/C++",
-			["rust_analyzer"] = "Rust",
-		}
+		local blacklist = { ["copilot"] = true, ["github copilot"] = true, ["null-ls"] = true, ["stylua"] = true }
+		local rename = { lua_ls = "LuaLS", pyright = "Pyright", tsserver = "TS", gopls = "Go", clangd = "C/C++", rust_analyzer = "Rust" }
 		for _, client in ipairs(vim.lsp.get_clients { bufnr = 0 }) do
 			local name = client.name:lower()
 			if not blacklist[name] then
@@ -209,6 +172,17 @@ local DAP = {
 	hl = { fg = colors.red, bold = true },
 }
 
+local node_version
+if vim.fn.executable "node" == 1 then
+	local cmd = vim.fn.has "win32" == 1 and "node -v 2>nul" or "node -v 2>/dev/null"
+	local handle = io.popen(cmd)
+	if handle then
+		local result = handle:read "*a"
+		handle:close()
+		node_version = result and result:match "v(%d+)"
+	end
+end
+
 --------------------------------------------------
 -- PROJECT CAPSULE
 --------------------------------------------------
@@ -224,14 +198,8 @@ local ProjectCapsule = {
 			table.insert(parts, "󰌠 " .. name)
 		end
 
-		if vim.fn.executable "node" == 1 then
-			local handle = io.popen "node -v 2>/dev/null"
-			if handle then
-				local result = handle:read "*a"
-				handle:close()
-				local major = result and result:match "v(%d+)"
-				if major then table.insert(parts, "󰎙 v" .. major) end
-			end
+		if node_version then
+			table.insert(parts, "󰎙 v" .. node_version)
 		end
 
 		return " " .. table.concat(parts, " | ") .. " "
@@ -267,23 +235,61 @@ local ScrollBar = {
 }
 
 --------------------------------------------------
--- STATUSLINE SETUP
+-- START SCREEN DETECTION & STATUSLINE SETUP
 --------------------------------------------------
+local function is_start_screen()
+	local buf = vim.api.nvim_get_current_buf()
+	if not vim.api.nvim_buf_is_valid(buf) then return false end
+	local ft = vim.bo[buf].filetype
+	local bt = vim.bo[buf].buftype
+	local name = vim.api.nvim_buf_get_name(buf)
+
+	if vim.tbl_contains({ "snacks_dashboard", "alpha", "dashboard", "starter" }, ft) then
+		return true
+	end
+
+	if name == "" and ft == "" and bt == "" and not vim.bo[buf].modified then
+		local count = vim.api.nvim_buf_line_count(buf)
+		if count <= 1 then
+			local lines = vim.api.nvim_buf_get_lines(buf, 0, 1, false)
+			return not lines[1] or lines[1] == ""
+		end
+	end
+
+	return false
+end
+
+local MainStatusline = {
+	condition = function() return not is_start_screen() end,
+	ViMode,
+	File,
+	Git,
+	GitDiff,
+	Diagnostics,
+	Align,
+	LSP,
+	Align,
+	DAP,
+	ProjectCapsule,
+	Clock,
+	Ruler,
+	ScrollBar,
+}
+
 require("heirline").setup {
-	statusline = {
-		ViMode,
-		File,
-		Git,
-		GitDiff,
-		Diagnostics,
-		Align,
-		LSP,
-		Align,
-		DAP,
-		ProjectCapsule,
-		Clock,
-		Ruler,
-		ScrollBar,
-	},
+	statusline = MainStatusline,
 	opts = { colors = colors },
 }
+
+local function update_laststatus()
+	vim.o.laststatus = is_start_screen() and 0 or 3
+end
+
+local group = vim.api.nvim_create_augroup("VasuStatuslineToggle", { clear = true })
+vim.api.nvim_create_autocmd({ "UIEnter", "BufEnter", "BufReadPost", "BufNewFile", "TextChanged", "InsertEnter" }, {
+	group = group,
+	callback = update_laststatus,
+	desc = "Dynamically toggle statusline visibility on start screen",
+})
+
+update_laststatus()
