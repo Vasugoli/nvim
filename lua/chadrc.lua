@@ -10,6 +10,7 @@ M.base46 = {
 
 M.ui = {
 	cmp = {
+		icons_left = true,
 		lspkind_text = true,
 		style = "default", -- default/flat_light/flat_dark/atom/atom_colored
 		format_colors = {

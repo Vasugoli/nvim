@@ -8,18 +8,14 @@ require "vasu.plugins.pack-hooks"
 vim.pack.add {
     -- File finder
     { src = "https://github.com/dmtrKovalenko/fff.nvim" },
-    { src = "https://github.com/nvim-lua/plenary.nvim" },
+    -- { src = "https://github.com/nvim-lua/plenary.nvim" },
 
     -- statusline
     { src = "https://github.com/rebelot/heirline.nvim" },
 
     -- File explorer
     { src = "https://github.com/mikavilpas/yazi.nvim" },
-    { src = "https://github.com/folke/snacks.nvim" }, -- File Explorer and few other modules
-
-    -- folding
-    -- { src = "https://github.com/kevinhwang91/nvim-ufo" },
-    -- { src = "https://github.com/kevinhwang91/promise-async" },
+    { src = "https://github.com/folke/snacks.nvim" },
 
     -- markdown previewer
     { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
@@ -66,7 +62,6 @@ vim.pack.add {
 
     -- AI completions
     { src = "https://github.com/github/copilot.vim" },
-    { src = "https://github.com/olimorris/codecompanion.nvim" },
 
     -- Jump / motion & smooth scroll
     { src = "https://github.com/folke/flash.nvim" },
@@ -76,7 +71,6 @@ vim.pack.add {
 
     -- Key display + which-key
     { src = "https://github.com/nvzone/showkeys" },
-    -- { src = "https://github.com/folke/which-key.nvim" },
 
     -- DAP (debugger) stack
     { src = "https://github.com/mfussenegger/nvim-dap" },
