@@ -2,9 +2,6 @@
 -- Using blink.cmp — nvim-cmp and all hrsh7th/* sources removed from pack.lua
 -- NOTE: blink.cmp is loaded by vim.pack automatically — no packadd needed
 -- Only need the boolean — luasnip itself is used internally by blink via preset
-vim.cmd.packadd("blink.cmp")
-local has_luasnip = pcall(require, "luasnip")
-
 local ok, blink_cmp = pcall(require, "blink.cmp")
 if not ok then
     vim.notify("blink.cmp not loaded: " .. tostring(blink_cmp), vim.log.levels.WARN)
@@ -138,11 +135,16 @@ blink_cmp.setup(vim.tbl_deep_extend("force", nvchad_config, {
     },
 }))
 
--- Load luasnip vscode-style snippets if luasnip is available
-if has_luasnip then
-    local vscode_loader = require("luasnip.loaders.from_vscode")
-    vscode_loader.lazy_load()
-    vscode_loader.lazy_load({
-        paths = {vim.fn.stdpath("config") .. "/snippets"}
-    })
-end
+-- Load luasnip vscode-style snippets on first InsertEnter
+vim.api.nvim_create_autocmd("InsertEnter", {
+    once = true,
+    callback = function()
+        local ok_loader, vscode_loader = pcall(require, "luasnip.loaders.from_vscode")
+        if ok_loader then
+            vscode_loader.lazy_load()
+            vscode_loader.lazy_load({
+                paths = { vim.fn.stdpath("config") .. "/snippets" },
+            })
+        end
+    end,
+})

@@ -1,13 +1,26 @@
-require("trouble").setup({focus = true})
+local trouble_loaded = false
+local function ensure_trouble()
+    if trouble_loaded then return end
+    trouble_loaded = true
+    pcall(function()
+        require("trouble").setup({ focus = true })
+    end)
+end
 
-vim.keymap.set("n", "<leader>xw", "<cmd>Trouble diagnostics toggle<CR>",
+local function trouble_cmd(cmd)
+    return function()
+        ensure_trouble()
+        vim.cmd(cmd)
+    end
+end
+
+vim.keymap.set("n", "<leader>xw", trouble_cmd("Trouble diagnostics toggle"),
                {desc = "Open trouble workspace diagnostics"})
-vim.keymap.set("n", "<leader>xd",
-               "<cmd>Trouble diagnostics toggle filter.buf=0<CR>",
+vim.keymap.set("n", "<leader>xd", trouble_cmd("Trouble diagnostics toggle filter.buf=0"),
                {desc = "Open trouble document diagnostics"})
-vim.keymap.set("n", "<leader>xq", "<cmd>Trouble quickfix toggle<CR>",
+vim.keymap.set("n", "<leader>xq", trouble_cmd("Trouble quickfix toggle"),
                {desc = "Open trouble quickfix list"})
-vim.keymap.set("n", "<leader>xl", "<cmd>Trouble loclist toggle<CR>",
+vim.keymap.set("n", "<leader>xl", trouble_cmd("Trouble loclist toggle"),
                {desc = "Open trouble location list"})
 
 

@@ -109,7 +109,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 	end,
 })
 
-vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter" }, {
+vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
 	group = vim.api.nvim_create_augroup("LspReferenceClear", { clear = true }),
 	callback = function() vim.lsp.buf.clear_references() end,
 })

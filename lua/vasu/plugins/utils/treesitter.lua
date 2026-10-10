@@ -33,7 +33,10 @@ local ensure_installed = {
 	"ron",
 }
 
-treesitter.install(ensure_installed)
+-- User command to install or update configured parsers on demand
+vim.api.nvim_create_user_command("TSInstallConfigured", function()
+	treesitter.install(ensure_installed)
+end, { desc = "Install all configured Treesitter parsers" })
 
 -- ── Per-buffer highlighting + indentation via autocmd ────────────────────────
 vim.api.nvim_create_autocmd("FileType", {
