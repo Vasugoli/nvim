@@ -14,19 +14,3 @@ vim.schedule(function() vim.cmd "ShowkeysToggle" end)
 vim.keymap.set("n", "<leader>sk", "<cmd>ShowkeysToggle<CR>",
                {desc = "Toggle Showkeys"})
 
--- folke/which-key.nvim — interactive keymap popup
--- local wk = require("which-key")
-
--- wk.setup({
---     style = "helix",
---     border = "single",
---     layout = {
---         height = {min = 4, max = 25},
---         width = {min = 20, max = 50},
---         spacing = 3,
---         align = "left"
---     }
--- })
-
--- vim.keymap.set("n", "<leader>", function() wk.show({global = true}) end,
---                {desc = "Buffer Local Keymaps (which-key)"})

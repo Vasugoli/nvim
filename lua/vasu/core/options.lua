@@ -26,7 +26,6 @@ opt.foldlevel = 99
 opt.foldlevelstart = 99
 opt.foldenable = true
 
-
 -- Indenting
 o.expandtab = true
 o.shiftwidth = 4
@@ -37,7 +36,7 @@ o.softtabstop = 4
 opt.fillchars = { eob = " " }
 o.ignorecase = true
 o.smartcase = true
-o.mouse = "a"
+o.mouse = ""
 
 -- Numbers
 o.relativenumber = true
