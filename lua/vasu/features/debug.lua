@@ -1,3 +1,4 @@
+-- lua/vasu/features/debug.lua
 -- DAP (Debug Adapter Protocol) stack
 -- Plugins: mfussenegger/nvim-dap, rcarriga/nvim-dap-ui,
 --          nvim-neotest/nvim-nio, jay-babu/mason-nvim-dap.nvim, leoluz/nvim-dap-go

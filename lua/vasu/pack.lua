@@ -151,28 +151,4 @@ vim.api.nvim_create_user_command("PackCheck", function()
 end, { desc = "List non active plugins and select to delete" })
 
 
-require "vasu.plugins.utils.ai"
-require "vasu.plugins.utils.treesitter"
-require "vasu.plugins.utils.snacks"
-require "vasu.plugins.utils.mini"
-require "vasu.plugins.utils.showkeys"
-require "vasu.plugins.utils.yazi"
-require "vasu.plugins.utils.markdown"
-require "vasu.plugins.utils.fff"
-require "vasu.plugins.utils.flash"
-require "vasu.plugins.utils.git"
-require "vasu.plugins.utils.trouble"
--- require "vasu.plugins.utils.centered" -- replaced by scrolloff=999
-require "vasu.plugins.utils.origami"
-
-require "vasu.plugins.ui.heirline"
-require "vasu.plugins.ui.neoscroll"
-require "vasu.plugins.ui.smear-cursor"
-require "vasu.plugins.ui.nvchad"
-
-require "vasu.plugins.lsp.formatting"
-require "vasu.plugins.lsp.completions"
-require "vasu.plugins.lsp.mason"
-require "vasu.plugins.lsp.lspconfig"
-require "vasu.plugins.lsp.debug"
 
